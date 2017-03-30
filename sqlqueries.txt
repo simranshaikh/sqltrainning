@@ -1,0 +1,147 @@
+----------------- SQL --------------------
+
+1) select * from employees;
+
+2) select distinct job_id from employees;
+
+3) select hire_date from employees where hire_date <to_date('01-01-1981','dd-mm-yyyy'); 
+
+4) select employee_id from employees where department_id in(10,20);
+
+5) select employee_id from employees where department_id=20;
+
+6) select * from employees where first_name='Smith' or last_name='Smith';
+
+7) select location from employees where first_name='Smith' or last_name='Smith';
+
+8)select first_name,(1.2*salary) result from employees where salary>3000;
+
+9)
+
+10) select employee_id from employees where to_char(hire_date,'DD')<15;
+
+11) select employee_id,first_name,salary,department_id,hire_date,grade from emp e,salgrade s where e.sal>=s.losal and
+e.sal<=s.hisal and deptno in(10,30) and grade<>4 and hiredate<'01-dec-1981';
+15) select distinct department_id,job_id from employees;
+
+16) select * from employees where first_name='Blake' or last_name='Blake';
+
+17)select job_id from employees where lower(job_id) like '%clerk';
+
+18)select employee_id,salary,commission_pct from employees;
+
+19) select distinct department_id from employees;
+
+20)select hire_date from employees where hire_date <to_date('01-05-1981','dd-mm-yyyy');
+
+21)select job_id from employees where lower(job_id) like '%man';
+
+22) select job_id from employees where lower(job_id) like '%man' or lower(job_id) like '%clerk';
+
+23) select hire_date from employees where hire_date =to_date('01-05-1981','dd-mm-yyyy') or hire_date =to_date('17-11-1981','dd-mm-yyyy') or hire_date =to_date('30-12-1981','dd-mm-yyyy');
+
+24) select hire_date from employees where hire_date =to_date('01-01-1981','dd-mm-yyyy');
+
+24) select hire_date from employees where hire_date =to_date('01-01-1981','dd-mm-yyyy');
+
+25) select employee_id from employees where salary between 23000 and 40000;
+
+26)
+
+27) select hire_date from employees where hire_date >to_date('01-07-1982','dd-mm-yyyy');
+
+28) select salary from employees where first_name='Smith and first_name='Miller';
+
+29) select first_name,salary from employees where salary/12 >1000;
+
+30) select first_name,salary from employees where first_name!='James';
+
+31) select first_name from employees where commission_pct >salary;
+
+
+32)select first_name,salary from employees where salary between 22000 and 45000;
+
+33)// select first_name ,job_id where job_id is not like '%man%';
+
+34) select first_name from employees where first_name like 'M%';
+
+
+35) select first_name from employees where first_name like '%h';
+
+
+36) select first_name from employees where hire_date between '01-jan-1981' and '31-dec-1981';
+
+37) select first_name,salary from employees where salary like '%00';
+
+
+38) select first_name,hire_date from employees where to_char(hire_date,'yy') like '8%';
+
+39) select first_name,job_id from employees where job_id like '%clerk' and 
+
+
+40) select * from employees where job_id like '%man' and department_id=10 or department_id=20;
+
+
+41) select * from employees where first_name like 'S%';
+
+
+42) select first_name from employees where first_name like 'a%' or first_name like '%a%' or first_name like '%a';
+
+
+43) select first_name from employees where first_name like '__L%' or first_name like '__l%';
+
+
+44) select first_name from employees where first_name like 'A%' or first_name like 'M%';
+
+
+45) select first_name,salary,job_id from employees where job_id not like '%man' and department_id=30;
+
+
+47) select distinct department_id from employees;
+
+
+48) select first_name,salary from employees where salary > 1500 and department_id=10 or department_id=30;
+
+
+49) select first_name,salary from employees where salary not between 1500 and 2850;
+
+
+50) select first_name,job_id from employees where job_id not like '%MGR'; 
+
+
+51) select first_name,job_id,salary from employees where job_id like '%MGR' or job_id like '%CLERK' and salary not in(1000,3000,5000);
+
+
+52) select first_name,salary,commission_pct from employees where commission_pct>salary+salar
+
+
+53) select first_name from employees where first_name like '%LL%' and department_id=30 or manager_id=7782;
+
+
+54) 
+
+
+select substr(LOWER(first_name),1,length(first_name/2))||substr(UPPER(first_name),length(first_name)/2,LENGTH(first_name)) FROM employees;
+
+
+select first_name,salary,department_id from employees where salary like '%' || to_char(department_id) || '%';
+
+
+Display the number of employee for each job group deptno wise.
+
+
+select concat ( upper ( substr ( first_name, 0 , length (first_name)/ 2) ),lower (substr (first_name, length(first_name) / 2+1, length(first_name) )) ) from emp; 
+
+
+
+58) SELECT * FROM employees WHERE mod(salary,2)=1;
+ 
+
+List the names of the employees who are getting the highest salary dept wise
+
+
+
+select max(salary) from employees where 
+
+
+
