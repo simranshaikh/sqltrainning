@@ -1,0 +1,229 @@
+types of sql statements
+1)DML (insert ,delete ,update) non-auto commit;
+2)TCL (commit, rollback)
+3)data retival ( select, from ,where )
+4)DDL(create table, alter table, drop, rename)
+5)DC  (grant,
+ revoke)
+
+---------------------------------------
+
+select * from tab;
+1)system tables  (DD)
+   user_objects,
+
+select * from dict;
+2)user defined  
+
+select * from employees;
+
+select employee_id, salary from employees;
+
+desc employees;
+
+select employee_id, salary from employees  where salary >8000
+
+compraision
+>
+ <
+>=
+<=
+!=
+=
+ 
+and , or, not
+
+select employee_id, salary,department_id from employees  where salary >8000 and department_id=60
+
+select employee_id, salary,department_id from employees  where (salary >8000 or department_id=60)  and employee_id >110
+
+
+
+other operators
+
+in
+is null
+like
+between
+
+select employee_id, salary,department_id from employees  where department_id=30 or department_id=60 or  department_id=80;
+
+select employee_id, salary,department_id from employees  where department_id in(30,60,80);
+
+select employee_id, salary,department_id from employees  where department_id is  null
+select employee_id, salary,department_id from employees  where department_id is not null
+
+select employee_id, salary,department_id from employees  where salary between 8000 and 10000;
+
+select employee_id, last_name,salary,department_id from employees  where last_name like 'S%' or  last_name like 's%'
+
+select employee_id, last_name,salary,department_id from employees  where last_name like '_m%'
+
+like --> wild card  _  %
+
+
+
+select department_id from employees;
+select distinct department_id  from employees;
+select distinct department_id,job_id  from employees;
+
+
+order by 
+
+select employee_id, salary,department_id from employees  order by salary;
+
+select employee_id, salary,department_id from employees  order by salary desc;
+
+select employee_id, salary,department_id from employees  order by 3
+;
+
+select employee_id, salary +1000  result ,department_id from employees  order by result;
+
+select employee_id, salary +1000  "sal result"  ,department_id from employees  order by "sal result";
+
+
+select employee_id, department_id, salary from employees  order by  department_id,salary
+select employee_id, department_id, salary from employees  order by  department_id,salary desc
+
+select employee_id, salary,department_id from employees  where salary between 8000 and 10000  order by salary;
+
+
+
+single row functions
+
+
+select salary,  COMMISSION_PCT  ,salary + NVL(COMMISSION_PCT,0)   TotalSal from employees;
+
+select round(34.56) from dual; --->35
+select round(34.36) from dual;--->34
+
+select round(34.56,1) from dual;--->34.6
+select round(34.54,1) from dual;-->34.5
+select round(34.56,2) from dual;
+select round(34.5644,3) from dual;-->34.564
+select round(34.5645,3) from dual;-->34.565
+
+
+
+select round(34.5644,-1) from dual;
+
+select round(138.5644,-1) from dual;
+
+select round(138.5644,-2) from dual;
+
+select round(138.5644,-3) from dual;
+
+ select trunc(34.56) from dual;
+
+ select trunc(34.56,1) from dual;
+select trunc(36.56,-1) from dual;
+
+
+select mod(16,2) from dual;-->0
+select mod(15,2) from dual;-->1
+
+
+select lower(last_name), upper(last_name), initcap(last_name) from employees;
+select last_name || ' '||first_name || ' '||salary result from employees;
+
+select concat(last_name,first_name) from employees;
+
+select concat(concat(last_name,' '),first_name) from employees;
+
+
+ select trim('h' from 'helloworldh') from dual;
+
+ select rtrim('helloworldh','h') from dual;
+ select ltrim('helloworldh','h') from dual;
+select length('helloworld') from dual;
+
+
+select instr('helloworld','h') from dual;
+
+ select instr('helloworld','l',5) from dual;-->9
+
+ select instr('helloworld','l') from dual;-->3
+
+ select instr('helloworld','l',1,2) from dual;
+
+
+ select instr('helloworld','l',6,2) from dual;
+
+
+
+ select substr('helloworld',2,3) from dual;
+select substr('helloworld',6) from dual;
+
+
+select sysdate - 5  from dual;
+select round((sysdate - hire_date)/365)  from employees;
+select last_name,salary ,round((sysdate - hire_date)/365) exp from employees where round((sysdate - hire_date)/365)>20
+
+
+
+select add_months(sysdate, 1) from dual;
+
+select add_months(sysdate, -1) from dual;
+
+SELECT MONTHS_BETWEEN(sysdate,hire_date) FROM employees;
+
+SELECT round(MONTHS_BETWEEN(sysdate,hire_date)/12) FROM employees;
+
+SELECT last_name,round(MONTHS_BETWEEN(sysdate,hire_date)/12) FROM employees where round(MONTHS_BETWEEN(sysdate,hire_date)/12)  >20;
+
+select to_char(sysdate, 'DDspth MM YYYY') from dual;
+
+select to_char(sysdate, 'DD "of" Mon Year') from dual;
+select to_char(sysdate, 'DD MM YYYY HH MI SS') from dual;
+
+select to_date('24-04-2016', 'dd-mm-yyyy') from dual;
+
+select to_date('24-Apr-2106', 'dd-MON-rr') from dual;
+
+select to_date('24-April-2106', 'dd-MONth-rr') from dual;
+
+
+
+select max(salary) from employees;
+
+select max(salary) , min(salary), sum(salary),avg(salary)from employees;
+
+select department_id,max(salary) from employees  group by department_id;
+
+
+select department_id,job_id,max(salary) from employees group by department_id,job_id order by department_id;
+
+
+select department_id,max(salary) from employees  group by department_id
+   having max(salary)>9000;
+
+
+
+
+
+select department_id,max(salary) from employees 
+ where department_id is not null
+group by department_id
+   having max(salary)>9000
+order by department_id;
+
+
+
+count(*)--> numbers of rows
+count(columnName)
+count( distinct columnName)
+
+
+select count(*) from employees 
+
+select count(department_id)  from employees ;
+select count(nvl(department_id,0))  from employees ;
+
+select count(distinct department_id)  from employees ;
+
+ select count(distinct nvl(department_id,0))  from employees ;
+
+
+ select count(distinct department_id)  from employees ;
+
+

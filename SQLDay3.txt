@@ -1,0 +1,347 @@
+joins
+fetch data from more than one table
+
+emp                                 dept
+empno ename sal   deptno             deptno  dname
+100    AA   2000   10                  10     HR
+101    BB   4000   20                  20     IT
+102    CC   5000   10                  30     Sales
+103    DD   2500                       40     marketing
+104    EE   2000   30
+105    FF   6000   20 
+
+
+n  tables   join conditions will be n-1
+-->equi join
+
+select ename,sal,dname from emp e,dept d
+where e.deptno=d.deptno;
+ 
+  
+o/p
+ename   sal  dname
+ AA   2000    HR
+ BB   4000     IT
+ CC   5000     HR
+ EE   2000     Sales
+ FF   6000      IT
+----------------------------------
+--------- for 2 tables ----------
+
+select first_name,salary,department_name
+from employees e , departments d 
+where e.department_id=d.department_id 
+ 
+--------------------------------
+---------- for 3 tables --------
+
+select first_name,salary,department_name,city 
+from employees e , departments d , locations l
+where e.department_id=d.department_id 
+  and d.location_id=l.location_id 
+
+---------------------------------------------
+----------- for 4 tables -----------
+select first_name,salary,country_name 
+from employees e , departments d , locations l, countries c
+where e.department_id=d.department_id 
+  and d.location_id=l.location_id and
+  l.country_id=c.country_id
+
+---------------------------------------------------
+----------------- 4 tables and search condition -------------
+
+select first_name,country_name,region_name 
+from employees e , departments d , locations l, 
+countries c, regions r
+where e.department_id=d.department_id 
+  and d.location_id=l.location_id and
+  l.country_id=c.country_id and
+  c.region_id=r.region_id and e.department_id=80
+---------------------------------------------------------
+
+-->outer join
+
+emp                                 dept
+empno ename sal   deptno             deptno  dname
+100    AA   2000   10                  10     HR
+101    BB   4000   20                  20     IT
+102    CC   5000   10                  30     Sales
+103    DD   2500                       40     marketing
+104    EE   2000   30
+105    FF   6000   20 
+
+
+----------------------------------------------
+
+select ename,sal,dname from emp e left outer join dept d
+on( e.deptno=d.deptno)
+
+o/p
+ename   sal  dname
+ AA   2000    HR
+ BB   4000     IT
+ CC   5000      HR
+ EE   2000    Sales
+ FF   6000      IT
+ DD   2500  
+select ename,sal,dname from emp e right outer join dept d
+on( e.deptno=d.deptno)
+o/p
+AA   2000    HR
+ BB   4000     IT
+ CC   5000      HR
+ EE   2000    Sales
+ FF   6000      IT
+               marketing
+
+select ename,sal,dname from emp e full outer join dept d
+on( e.deptno=d.deptno)
+
+o/p
+ename   sal  dname
+ AA   2000    HR
+ BB   4000     IT
+ CC   5000      HR
+ EE   2000    Sales
+ FF   6000      IT
+DD   2500  
+               marketing
+--------------------------------------
+outer join with +
+
+
+
+emp                                 dept
+empno ename sal   deptno             deptno  dname
+100    AA   2000   10                  10     HR
+101    BB   4000   20                  20     IT
+102    CC   5000   10                  30     Sales
+103    DD   2500                       40     marketing
+104    EE   2000   30
+105    FF   6000   20 
+
+
+select ename,sal,dname from emp e,dept d
+where e.deptno=d.deptno(+)
+
+o/p
+ename   sal  dname
+ AA   2000    HR
+ BB   4000     IT
+ CC   5000      HR
+ EE   2000    Sales
+ FF   6000      IT
+DD   2500
+select ename,sal,dname from emp e,dept d
+where e.deptno(+)=d.deptno
+o/p
+ename   sal  dname
+AA   2000    HR
+ BB   4000     IT
+ CC   5000      HR
+ EE   2000    Sales
+ FF   6000      IT
+-     -        marketing
+------------------------------------------------
+----------------------------------------------
+-->non-equi join
+
+emp                                 salgrade
+empno ename sal   deptno             grade  lowsal highsal
+100    AA   2000   10                 U1    100      2000 
+101    BB   4000   20                 U2    2001     4000 
+102    CC   5000   10                 U3    4001     5000  
+103    DD   2500   10                 U4    5001     8000
+104    EE          30
+105    FF   6000   20 
+
+select ename , sal, grade from emp e , salgrade g
+where sal between lowsal and highsal;
+
+select ename , sal, grade from emp e , salgrade g
+where sal >= lowsal and sal<= highsal;
+
+o/p
+ename sal grade
+AA   2000  U1
+BB   4000  U2
+ CC   5000  U3
+ DD   2500  U2
+FF   6000   U4 
+------------------------------------------------------
+
+-->self join
+emp                                 
+empno ename sal   deptno    mgrid        
+100    AA   2000   10                   
+101    BB   4000   20       100           
+102    CC   5000   10       100          
+103    DD   2500   10       101            
+104    EE   2000   30       101 
+105    FF   6000   20       100
+        
+select e.ename || 'has manager '||m.ename  result 
+from emp e, emp m
+where e.mgrid =m.empno;
+       
+o/p
+result
+BB  has manager AA
+CC has manager AA
+DD has manager BB
+EE has manager BB
+FF has manager AA
+-------------------------------------------
+
+subquery
+
+select .... from tableName
+where  columnName =(select ...from tableName)
+
+
+select last_name from employees where slary >(select salary from employees where last_name='XYZ')
+
+select last_name ,salary from employees where salary > (select salary from employees where last_name='Gates')  
+
+----------------------------------------------------
+select last_name  from employees 
+where job_id in (
+select job_id from employees 
+where last_name='Gates' or last_name='Grant')
+
+
+ > any means more than min value
+ < any means less than max value
+ > all means more than max value
+ < all means less than min value
+
+SELECT last_name, salary FROM employees 
+WHERE salary < ANY (SELECT salary FROM employees WHERE department_id = 30)
+
+
+SELECT last_name, salary FROM employees 
+WHERE salary > ANY (SELECT salary FROM employees WHERE department_id = 30)
+
+
+
+
+   SELECT last_name, salary FROM Employees WHERE salary > ALL
+    (SELECT salary FROM employees WHERE department_id = 30)
+
+
+
+ SELECT last_name, salary FROM Employees WHERE salary < ALL
+    (SELECT salary FROM employees WHERE department_id = 30)
+
+--------------------------------------------------------
+
+exixts subquery
+
+select e.last_name from employees e
+where exists (select * from employees m where m. MANAGER_ID =e.employee_id ) 
+
+
+select e.last_name from employees e
+where not  exists (select * from employees m where m. MANAGER_ID =e.employee_id ) 
+-----------------------------------------------------------
+emp                                 
+empno ename sal   deptno    mgrid        
+100    AA   2000   10                   
+101    BB   4000   20       100           
+102    CC   5000   10       100          
+103    DD   2500   10       101            
+104    EE   2000   30       101 
+105    FF   6000   20       100
+
+select ename from emp  e
+where exixts (select * from emp m where m.mgrid=e.empno)
+                                                 
+
+
+
+o/p
+ename
+AA
+BB
+              
+select ename from emp  e
+where not exixts (select * from emp m where m.mgrid=e.empno)
+                                              
+o/p
+ename
+CC
+DD
+EE
+FF
+------------------------------------------------------
+
+co-related subquery
+
+select last_name, salary from employees e
+where salary > (select min(salary) from employees where department_id=e.department_id)
+
+
+
+emp                                 
+empno ename sal   deptno    mgrid        
+100    AA   2000   10                   
+101    BB   4000   20       100           
+102    CC   5000   10       100          
+103    DD   2500   10       101            
+104    EE   2000   30       101 
+105    FF   6000   20       100
+
+
+select ename, sal from emp e
+where sal > (select min(sal) from emp where deptno=e.deptno) 
+                                                   20
+
+deptno minsal
+10     2000
+20  4000
+
+o/p
+CC   5000 
+DD   2500
+ FF   6000 
+
+--------------------
+
+Inline view
+
+select last_name, salary, m.avgsal from employees e,
+(select department_id,avg(salary) avgsal
+ from employees group by department_id)m
+where e.department_id=m.department_id and e.salary <m.avgsal
+
+
+
+
+emp
+empno ename sal   deptno    mgrid        
+100    AA   2000   10                   
+101    BB   4000   20       100           
+102    CC   5000   10       100          
+103    DD   2500   10       101            
+104    EE   2000   30       101 
+105    FF   6000   20       100
+
+
+  m
+deptno avgsal
+10      3250
+20      5000
+30      2000
+
+
+select first_name,salary, m.avgsal from employees e,(select department_id,avg(salary) avgsal from employees group by department_id)m where e.department_id=m.department_id and e.salary >m.avgsal
+
+o/p
+ename sal   m.avgsal
+CC   5000  3250
+FF   6000  5000
+
+----------------------------------------------------------------------------------------
+
+
