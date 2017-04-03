@@ -1,0 +1,171 @@
+1)
+declare 
+i number:= &num1;	
+j number := &num2;
+addition number;
+begin 
+addition := i+j ;
+dbms_output.put_line(' addition of number is ' || addition) ;
+end ;
+ /
+--------------------------------------------------------------------------------------------------------------
+2)
+ declare
+v_name varchar2(20);
+v_sal number ;
+v_empid number := &eno;
+begin
+select last_name, salary into v_name, v_sal from employees
+where employee_id = v_empid;
+dbms_output.put_line('name= ' || v_name);
+dbms_output.put_line('salary= ' || v_sal);
+end;
+/
+----------------------------------------------------------------------------------------------------------------
+3) declare
+Rec_Emp employees%rowtype;
+v_empid number :=&eno ;
+
+begin
+select * into Rec_Emp from employees
+where employee_id = v_empid;
+dbms_output.put_line('name= ' || Rec_Emp.last_name);
+dbms_output.put_line('salary= ' || Rec_Emp.salary);
+end;
+/
+----------------------------------------------------------------------------------------------------------------
+4)
+declare
+v_name employees.last_name%type;
+v_sal employees.salary%type;
+v_empid number := &eno;
+begin
+select last_name, salary into v_name, v_sal from employees
+where employee_id = v_empid;
+dbms_output.put_line('name= ' || v_name);
+dbms_output.put_line('salary= ' || v_sal);
+end;
+/
+----------------------------------------------------------------------------------------------------------------
+5)
+ declare
+a number :=&num1;
+begin
+if (mod(a,2)=0) then
+ dbms_output.put_line(a||' is even number');
+else
+  dbms_output.put_line(a||' is odd number');
+end if;
+end;
+/
+----------------------------------------------------------------------------------------------------------------
+6)
+declare
+a number :=&num1;
+b number :=&num2;
+c number :=&num3;
+begin
+if (a>b and a>c) then
+ dbms_output.put_line(a||' is max number');
+elsif( b>c) then
+  dbms_output.put_line(b||' is max number');
+else 
+dbms_output.put_line(c||' is max number'); 
+end if;
+end;
+/
+-----------------------------------------------------------------------------------------
+7)
+loops
+1)basic loop
+2)while loop
+3)for loop 
+
+
+1)basic loop
+
+loop
+ ---
+----
+exit when(condition);
+end loop ;
+-------------------------------------------------------------------------------
+declare 
+i number :=1;
+begin
+loop
+ exit when (i>5);
+dbms_output.put_line(i);
+i:=i+1;
+end loop;
+end ;
+/
+-------------------------------------------------------------------------------
+
+
+2) while loop
+
+while(condition)
+loop
+----
+----
+end loop;
+--------------------------------------------------------------------------------
+declare 
+i number :=1;
+begin
+while (i<=5)
+loop
+dbms_output.put_line(i);
+i:=i+1;
+end loop;
+end ;
+/
+----------------------------------------------------------------------
+3) for loop
+
+for variablename in lowerlimit .. upperlimit
+loop
+-----
+-----
+end loop;
+------------------------------------------------------------------------------------
+begin
+for i in 1..5
+loop
+dbms_output.put_line(i);
+end loop;
+end ;
+/
+===================================================
+begin
+for i in reverse 1..5
+loop
+dbms_output.put_line(i);
+end loop;
+end ;
+/
+----------------------------------------------------------------------------------------
+variable maxsal number
+
+begin
+select max(salary) into :Maxsal from employees;
+dbms_output.put_line('Max salary is= ' || :Maxsal);
+end;
+/
+===================================================
+declare
+str varchar2(50) :='hello';
+begin
+ declare 
+ str varchar2(50) :='hi' ;
+str1 varchar2(50) :='world';
+begin
+outer.str:=outer.str||str1;
+str:= outer.str;
+dbms_output.put
+
+
+end;
+end;
+/

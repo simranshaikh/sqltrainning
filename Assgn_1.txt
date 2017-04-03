@@ -1,0 +1,99 @@
+5)
+declare
+Max_sal number ;
+Min_sal number ;
+dept_id number :=&num1;
+begin
+select Max(salary), Min(salary)  into Max_sal,Min_sal from employees
+where department_id =dept_id;
+dbms_output.put_line(' max sal is ='||Max_sal);
+dbms_output.put_line(' min sal is ='||Min_sal);
+end ;
+/
+---------------------------------------------------------------------------------------
+Enter value for num1: 20
+old   4: dept_id number :=&num1;
+new   4: dept_id number :=20;
+max sal is =13000
+min sal is =6000
+
+=============================================================================
+4)
+declare
+a number := &num1;
+b number := &num2;
+result number;
+begin
+
+result:= (a/b + b);
+dbms_output.put_line(' result is '|| result);
+end;
+/
+-----------------------------------------------------------------------------------------
+Enter value for num1: 20
+old   2: a number := &num1;
+new   2: a number := 20;
+Enter value for num2: 30
+old   3: b number := &num2;
+new   3: b number := 30;
+result is 30.66666666666666666666666666666666666667
+=============================================================================
+6)
+declare
+job_id varchar2(15):= '&jid';
+avg_sal number;
+begin
+select avg(sal) into avg_sal from emp where lower(job) =job_id ;
+dbms_output.put_line(' avg sal is ='||avg_sal);
+end;
+/
+----------------------------------------------------------------------------------------
+Enter value for jid: CLERK
+old   2: job_id varchar2(15):= '&jid';
+new   2: job_id varchar2(15):= 'CLERK';
+avg sal is =3930.625
+============================================================================
+7) 
+declare
+emp_id number:=&eid;
+e_sal number;
+begin
+select sal into e_sal from emp where empno= emp_id;
+if (e_sal<2500 )then
+dbms_output.put_line(' class=  LOW');
+elsif (e_sal >= 2500 and e_sal <5000)then
+dbms_output.put_line('class = MEDIUM');
+elsif(e_sal>=5000)then
+dbms_output.put_line('class = HIGH');
+end if;
+end;
+/
+---------------------------------------------------------------------------------------
+Enter value for eid: 7369
+old   2: emp_id number:=&eid;
+new   2: emp_id number:=7369;
+class = MEDIUM
+
+PL/SQL procedure successfully completed.
+================================================================================
+9)
+declare
+n number:=&num;
+i number ;
+fact number:=1;
+begin
+for i in 1..n
+loop
+fact:=fact*i;
+end loop;
+dbms_output.put_line(' factorial of no is= '||fact);
+end;
+/
+-------------------------------------------------------------------------------------------------
+Enter value for num: 5
+old   2: n number:=&num;
+new   2: n number:=5;
+factorial of no is= 120
+
+PL/SQL procedure successfully completed.
+

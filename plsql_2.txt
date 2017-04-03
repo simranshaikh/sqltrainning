@@ -1,0 +1,208 @@
+                                                                                                      CURSOR
+                                                                                              -------------------------
+
+1)
+declare 
+cursor c_emp is select * from emp;
+v_emp c_emp%rowtype;
+begin
+open c_emp;
+for v_counter in 1..10
+loop
+fetch c_emp into v_emp;
+dbms_output.put_line(' ename='||v_emp.ename||' sal='||v_emp.sal);
+end loop;
+close c_emp;
+end;
+/
+-------------------------------------------------------------------------------------------------
+ename=KING sal=5000
+ename=BLAKE sal=2850
+ename=CLARK sal=2450
+ename=JONES sal=2975
+ename=MARTIN sal=1250
+ename=ALLEN sal=1600
+ename=TURNER sal=1500
+ename=JAMES sal=950
+ename=WARD sal=1250
+ename=FORD sal=3000
+==================================================
+1.1)
+declare 
+cursor c_emp is select * from emp;
+v_emp c_emp%rowtype;
+begin
+open c_emp;
+loop
+fetch c_emp into v_emp;
+exit when c_emp%notfound;
+dbms_output.put_line(' ename='||v_emp.ename||' sal='||v_emp.sal ||' row count='||c_emp%rowcount);
+end loop;
+if c_emp%isopen then
+dbms_output.put_line(' closing cursor');
+close c_emp;
+end if;
+end;
+/
+
+-----------------------------------------------------------------------
+ename=KING sal=5000 row count=1
+ename=BLAKE sal=2850 row count=2
+ename=CLARK sal=2450 row count=3
+ename=JONES sal=2975 row count=4
+ename=MARTIN sal=1250 row count=5
+ename=ALLEN sal=1600 row count=6
+ename=TURNER sal=1500 row count=7
+ename=JAMES sal=950 row count=8
+ename=WARD sal=1250 row count=9
+ename=FORD sal=3000 row count=10
+ename=SMITH sal=800 row count=11
+ename=SCOTT sal=3000 row count=12
+ename=ADAMS sal=1100 row count=13
+ename=MILLER sal=1300 row count=14
+closing cursor
+
+PL/SQL procedure successfully completed.
+======================================================================================
+parameterised cursor
+
+
+declare 
+cursor c_emp(p_deptno number) is select * from emp where deptno=p_deptno;
+v_emp c_emp%rowtype;
+begin
+open c_emp(10);
+dbms_output.put_line(' emp from deptno 10');
+loop
+fetch c_emp into v_emp;
+exit when c_emp%notfound;
+dbms_output.put_line(' ename='||v_emp.ename||' sal='||v_emp.sal ||' row count='||c_emp%rowcount);
+end loop;
+if c_emp%isopen then
+dbms_output.put_line(' closing cursor');
+close c_emp;
+end if;
+
+open c_emp(20);
+dbms_output.put_line(' emp from deptno 20');
+loop
+fetch c_emp into v_emp;
+exit when c_emp%notfound;
+dbms_output.put_line(' ename='||v_emp.ename||' sal='||v_emp.sal ||' row count='||c_emp%rowcount);
+end loop;
+if c_emp%isopen then
+dbms_output.put_line(' closing cursor');
+close c_emp;
+end if;
+end;
+/
+-------------------------------------------------------------------------------------------------------------------------------------
+emp from deptno 10
+ename=KING sal=5000 row count=1
+ename=CLARK sal=2450 row count=2
+ename=MILLER sal=1300 row count=3
+closing cursor
+emp from deptno 20
+ename=JONES sal=2975 row count=1
+ename=FORD sal=3000 row count=2
+ename=SMITH sal=800 row count=3
+ename=SCOTT sal=3000 row count=4
+ename=ADAMS sal=1100 row count=5
+closing cursor
+
+PL/SQL procedure successfully completed.
+=========================================================
+
+declare 
+cursor c_emp(p_deptno number) is select * from emp where deptno=p_deptno;
+begin
+dbms_output.put_line(' emp from deptno 10');
+for v_emp in c_emp(10)
+loop
+dbms_output.put_line(' ename='||v_emp.ename||' sal='||v_emp.sal ||' row count='||c_emp%rowcount);
+end loop;
+
+dbms_output.put_line(' emp from deptno 20');
+for v_emp in c_emp(20)
+loop
+dbms_output.put_line(' ename='||v_emp.ename||' sal='||v_emp.sal ||' row count='||c_emp%rowcount);
+end loop;
+
+
+end;
+
+/
+---------------------------------------------------------------------------------------------------------------------------------------------
+emp from deptno 10
+ename=KING sal=5000 row count=1
+ename=CLARK sal=2450 row count=2
+ename=MILLER sal=1300 row count=3
+emp from deptno 20
+ename=JONES sal=2975 row count=1
+ename=FORD sal=3000 row count=2
+ename=SMITH sal=800 row count=3
+ename=SCOTT sal=3000 row count=4
+ename=ADAMS sal=1100 row count=5
+
+PL/SQL procedure successfully completed.
+====================================================================================================
+UPDATE
+
+declare 
+dept_no number :=&dno;
+begin
+update emp set sal=sal+1000 where deptno=dept_no;
+if SQL%found then
+dbms_output.put_line(' record updated no of rows affected= '||SQL%rowcount);
+else
+dbms_output.put_line(' record not updated');
+end if;
+end;
+/
+------------------------------------------------------------------------------------------------------------------------
+Enter value for dno: 20
+old   2: dept_no number :=&dno;
+new   2: dept_no number :=20;
+record updated no of rows affected= 5
+==================================================================================================
+FOR RECORD LOCKING
+
+declare
+cursor c_emp is select * from emp for update of sal;
+begin
+for v_emp in c_emp
+loop
+if  v_emp.deptno=10 then
+update emp set sal=sal*1.30 where current of c_emp;
+dbms_output.put_line('for dept no 10 ename= '||v_emp.ename||'sal= '||v_emp.sal);
+elsif  v_emp.deptno=20 then
+update emp set sal=sal*1.20 where current of c_emp;
+dbms_output.put_line('for dept no 20 ename= '||v_emp.ename||'sal= '||v_emp.sal);
+elsif  v_emp.deptno=30 then
+update emp set sal=sal*1.10 where current of c_emp;
+dbms_output.put_line('for dept no 30 ename= '||v_emp.ename||'sal= '||v_emp.sal);
+end if;
+end loop;
+/
+---------------------------------------------------------------------------------------------
+for dept no 10 ename= KINGsal= 11700
+for dept no 30 ename= BLAKEsal= 3135
+for dept no 10 ename= CLARKsal= 8385
+for dept no 20 ename= JONESsal= 4770
+for dept no 30 ename= MARTINsal= 1375
+for dept no 30 ename= ALLENsal= 1760
+for dept no 30 ename= TURNERsal= 1650
+for dept no 30 ename= JAMESsal= 1045
+for dept no 30 ename= WARDsal= 1375
+for dept no 20 ename= FORDsal= 4800
+for dept no 20 ename= SMITHsal= 2160
+for dept no 20 ename= SCOTTsal= 4800
+for dept no 20 ename= ADAMSsal= 2520
+for dept no 10 ename= MILLERsal= 6890
+
+PL/SQL procedure successfully completed.
+===================================================================================================
+
+
+
+
