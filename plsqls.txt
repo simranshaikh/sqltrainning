@@ -1,0 +1,200 @@
+declare
+v_name varchar2(20);
+v_sal number;
+v_empid number :=&no;
+begin
+select last_name, salary into v_name,v_sal from employees
+where employee_id=v.empid;
+dbms_output.put_line('name'=||v_name);
+dbms_output.put_line('salary='||v_sal);
+end;
+/
+-----------------------------------------------------------------
+
+  declare
+  i number:=10;
+  begin
+  dbms_output.put_line('value of i is '||i);
+  end;
+  /
+
+---------------------------------------------------------------------
+
+ declare
+ cursor c_emp is select * from emp;
+ v_emp c_emp%rowtype;
+ begin
+ open c_emp;
+ for v_counter in 1..10
+ loop
+ fetch c_emp into v_emp;
+ dbms_output.put_line('ename='||v_emp.ename||' sal='||v_emp.sal);
+ end loop;
+ close c_emp;
+ end;
+ /
+
+---------------------------------------------------------------------------------
+
+declare
+cursor c_emp is select * from emp;
+v_emp c_emp%rowtype;
+begin
+open c_emp;
+
+loop
+fetch c_emp into v_emp;
+exit when c_emp%notfound;
+dbms_output.put_line('ename='|| v_emp.ename||' sal='||v_emp.sal||' row count='||c_emp%rowcount);
+end loop;
+if c_emp%isopen then
+dbms_output.put_line('closing cursor');
+close c_emp;
+end if;
+end;
+/
+
+-------------------------------------------------------------------------------------------------------------------------
+
+declare
+cursor c_emp(p_deptno number) is select * from emp where deptno=p_deptno;
+v_emp c_emp%rowtype;
+begin
+open c_emp(10);
+dbms_output.put_line('emp from deptno 10');
+loop
+fetch c_emp into v_emp;
+exit when c_emp%notfound;
+
+dbms_output.put_line('ename='||v_emp.ename||' sal='||v_emp.sal||'row count='||c_emp%rowcount);
+end loop;
+if c_emp%isopen then
+dbms_output.put_line('closing cursor');
+close c_emp;
+end if;
+
+open c_emp(20);
+dbms_output.put_line('emp from deptno 20');
+loop
+fetch c_emp into v_emp;
+exit when c_emp%notfound;
+
+dbms_output.put_line('ename='||v_emp.ename||' sal='||v_emp.sal||' row count='|| c_emp%rowcount);
+end loop;
+if c_emp%isopen then
+dbms_output.put_line('closing cursor');
+close c_emp;
+end if;
+end;
+/
+---------------------------------------------------------------------------------------------------------------------------------------
+
+declare
+cursor c_emp(p_deptno number) is select * from emp where deptno=p_deptno;
+v_emp c_emp%rowtype;
+begin
+
+dbms_output.put_line('emp from deptno 10');
+for v_emp in c_emp(10)
+loop
+dbms_output.put_line('ename='||v_emp.ename||' sal='||v_emp.sal||'  row count='||c_emp%rowcount);
+end loop;
+dbms_output.put_line('emp from deptno 20');
+for v_emp in c_emp(20)
+loop
+dbms_output.put_line('ename='||v_emp.ename||' sal='||v_emp.sal||' row count='||c_emp%rowcount);
+end loop;
+end;
+/
+----------------------------------------------------------
+
+declare
+  n number;
+  temp number;
+  sum number := 1;
+begin
+  n :=&n;
+  temp := n;
+  while temp>0 loop
+    sum := temp*sum;
+    temp := temp-1;
+  end loop;
+  dbms_output.put_line('Factorial of '||n||' is '||sum);
+end;
+/
+----------------------------------------------------------------
+declare
+v_no number(4);
+v_x  varchar2(10);
+v_y  varchar2(10);
+v_z  varchar2(10);
+begin
+
+
+
+
+
+
+
+
+
+
+
+begin
+update emp set sal=sal+1000 where deptno=10;
+if SQL%found then
+dbms_output.put_line('record updated no of rows affected='||SQL%rowcount);
+else
+dbms_output.put_line('record not updated');
+end if;
+end;
+/
+---------------------------------------------------------------
+
+declare 
+cursor c_emp is select * from emp for update of sal;
+begin
+for v_emp in c_emp
+loop
+if v_emp.deptno=10 then
+update emp set sal=sal+sal*0.3 where current of  c_emp;
+dbms_output.put_line('for deptno 10 ename='|| v_emp.ename||'  sal='||v_emp.sal||' deptno='||v_emp.deptno);
+elsif v_emp.deptno=20 then
+update emp set sal=sal+sal*0.2 where current of  c_emp;
+dbms_output.put_line('for deptno 20 ename='|| v_emp.ename||' sal='||v_emp.sal||'deptno='||v_emp.deptno);
+elsif v_emp.deptno=30 then
+update emp set sal=sal+sal*0.1 where current of  c_emp;
+dbms_output.put_line('for deptno 30 ename='|| v_emp.ename||' sal='||v_emp.sal||'deptno='||v_emp.deptno);
+end if;
+end loop;
+end;
+/
+
+----------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
