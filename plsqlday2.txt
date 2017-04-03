@@ -1,0 +1,74 @@
+DAY 2
+-------> cursor 
+1)
+declare
+cursor c_emp is select * from emp;
+v_emp c_emp%rowtype;
+begin
+open c_emp;
+for v_counter in 1..10
+loop
+fetch c_emp into v_emp;
+dbms_output.put_line('ename='||v_emp.ename||'  salary='||v_emp.salary);
+end loop;
+close c_emp;
+end;
+/
+
+
+
+2)declare
+cursor c_emp is select * from emp;
+v_emp c_emp%rowtype;
+begin
+loop
+fetch c_emp into v_emp;
+exit when c_emp%notfound;
+dbms_output.put_line('ename='||v_emp.ename||' sal='||v_emp.sal||' row count='||c_emp%rowcount);
+end loop;
+if c_emp%isopen then
+dbms_output.put_line('closing cursor');
+close c_emp;
+end if;
+end;
+/
+
+
+
+3) declare
+  cursor c_emp(p_deptno number) is select * from emp where deptno=p_deptno;
+  v_emp c_emp%rowtype;
+  begin
+  open c_emp(10);
+  dbms_output.put_line('emp frm dept 10');
+  loop
+  fetch c_emp into v_emp;
+  exit when c_emp%notfound;
+  dbms_output.put_line('ename='||v_emp.ename||' sal='||v_emp.sal||' row count='||c_emp%rowcount);
+  end loop;
+  if c_emp%isopen then
+  dbms_output.put_line('closing');
+  close c_emp;
+  end if;
+  end;
+  /
+
+
+
+4) ============================= for loop ====================================
+
+declare
+cursor c_emp(p_deptno number) is select * from emp where deptno=p_deptno;
+begin
+dbms_output.put_line('emp frm dept 10');
+for v_emp in c_emp(10)
+loop
+dbms_output.put_line('ename='||v_emp.ename||' sal='||v_emp.sal||' row count='||c_emp%rowcount);
+end loop;
+dbms_output.put_line('emp frm dept 20');
+for v_emp in c_emp(20)
+loop
+dbms_output.put_line('ename='||v_emp.ename||' sal='||v_emp.sal||' row count='||c_emp%rowcount);
+end loop;
+end;
+/

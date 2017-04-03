@@ -1,0 +1,143 @@
+
+ declare
+ i number:=&num1;
+ j number:=&num2;
+ addition number
+ begin
+ addition=i+j;
+ dbms_output.put_line('addition of number is'||addition);
+ end;
+ /
+
+
+
+   set serveroutput on 
+   declare 
+   v_name varchar2(20);
+   v_sal number;
+    v_empid number :=&eno;
+    begin
+    select last_name,salary into v_name,v_sal from employees where employee_id=v_empid;
+    dbms_output.put_line('name= '||v_name);
+    dbms_output.put_line('salary= '||v_sal);
+    end;
+    /
+
+
+declare 
+Rec_Emp employees%rowtype;
+v_empid number :=&eno;
+begin
+select * into Rec_Emp from employees 
+where employee_id =v_empid;
+dbms_output.put_line('name= '||Rec_Emp.last_name);
+dbms_output.put_line('salary= '||Rec_Emp.salary);
+end;
+/
+
+
+
+declare 
+v_name employees.last_name%type;
+v_sal employees.salary%type;
+v_empid number :=&eno;
+begin
+select last_name,salary into v_name,v_sal from employees 
+where employee_id =v_empid;
+dbms_output.put_line('name= '||v_name);
+dbms_output.put_line('salary= '||v_sal);
+end;
+/
+
+
+
+declare
+a number :=&num1;
+begin
+if( mod(a,2)=0) then
+dbms_output.put_line(a||' is an even number');
+else
+dbms_output.put_line(a||' is an odd number');
+end if;
+end;
+/
+
+
+
+declare
+a number :=&num1;
+b number :=&num2;
+c number :=&num3;
+begin
+if(a>b and a>c) then
+dbms_output.put_line(a||' is a max integer');
+elsif (b>c) then
+dbms_output.put_line(b||' is a max integer');
+else
+dbms_output.put_line(c||' is a max integer');
+end if;
+end;
+/
+
+
+declare
+i number :=1;
+begin
+loop 
+exit when (i>5);
+dbms_output.put_line(i);
+i:=i+1;
+end loop;
+end;
+
+
+
+
+declare
+i number :=1;
+begin
+while(i<=5)
+loop 
+dbms_output.put_line(i);
+i:=i+1;
+end loop;
+end;
+/
+
+
+
+for loop
+begin
+for i in 1..5
+loop
+dbms_output.put_line(i);
+end loop;
+end;
+/
+
+begin
+for i in  reverse 1..5
+loop
+dbms_output.put_line(i);
+end loop;
+end;
+/
+
+
+begin
+for i in 1..20
+loop
+if(i%2=0) then
+dbms_output.put_line(i);
+end loop;
+end;
+/
+
+
+variable Maxsal number
+print Maxsal
+begin
+select max(salary) into :Maxsal from employees;
+dbms_output.put_line('Max salary is= '||:Maxsal);
+end;
+/
