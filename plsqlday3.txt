@@ -1,0 +1,206 @@
+ ===================== DAY 3 =========================
+
+
+
+----------- Exception Handling -------------
+
+
+declare 
+v_sal emp.sal%type;
+var number(3);
+z number;
+begin
+var:=1000;
+z:=10/0;
+select sal into v_sal from emp where empno=1;
+dbms_output.put_line('sal ='||v_sal);
+
+exception
+when no_data_found then
+dbms_output.put_line('empno is not available');
+when zero_divide then
+dbms_output.put_line('Dont try to divide by zero');
+when others then
+dbms_output.put_line('Exception raised !!!!');
+end;
+/
+
+
+
+------------ cursor not opened -------------------------
+
+declare
+cursor c_emp is select * from emp;
+v_emp c_emp%rowtype;
+begin
+for v_counter in 1..10
+loop
+fetch c_emp into v_emp;
+dbms_output.put_line('ename='||v_emp.ename||'  salary='||v_emp.sal);
+end loop;
+close c_emp;
+exception
+when others then
+dbms_output.put_line('cursor not opened');
+end;
+/
+
+
+------------------- OR -------------------------------------
+
+declare 
+v_sal emp.sal%type;
+var number(3);
+z number;
+begin
+var:=1000;
+z:=10/0;
+select sal into v_sal from emp where empno=1;
+dbms_output.put_line('sal ='||v_sal);
+
+exception
+when no_data_found or value_error then
+dbms_output.put_line('empno is not available or value error !!!');
+when zero_divide then
+dbms_output.put_line('Dont try to divide by zero');
+when others then
+dbms_output.put_line('Exception raised !!!!');
+end;
+/
+
+
+
+----------------------   --------------------------------
+begin
+declare 
+v_sal emp.sal%type;
+var number(3);
+z number;
+begin
+select sal into z from emp;
+z:=10/0;
+select sal into v_sal from emp where empno=1;
+dbms_output.put_line('sal ='||v_sal);
+end;
+exception
+when no_data_found or value_error then
+dbms_output.put_line('empno is not available or value error !!!');
+when zero_divide then
+dbms_output.put_line('Dont try to divide by zero');
+when too_many_rows then
+dbms_output.put_line('multiple rows fetched !!!!!');
+
+when others then
+dbms_output.put_line('Exception raised !!!!');
+end;
+/
+
+
+
+
+declare 
+var number(3);
+z number;
+begin
+begin
+var:=1000;
+dbms_output.put_line('var='||var);
+exception
+when no_data_found or value_error then
+dbms_output.put_line('empno is not available or value error !!!');
+end;
+z:=10/0;
+dbms_output.put_line('after z');
+exception
+when zero_divide then
+dbms_output.put_line('Dont try to divide by zero');
+when others then
+dbms_output.put_line('Exception raised !!!!');
+end;
+/
+
+
+
+--------------------------- Pragma ---------------
+
+
+begin
+delete dept where deptno=10;
+dbms_output.put_line('dept 10 is deleted');
+end;
+declare 
+childfound exception;
+pragma exception_init(childfound,-02292);
+begin
+delete dept where deptno=10;
+dbms_output.put_line('dept is deleted');
+exception
+when childfound then
+dbms_output.put_line('emp existing in dept 10');
+end;
+/
+
+
+
+--------------------------------------------------
+
+declare
+marks number;
+wrong_marks exception;
+begin
+marks:=&marks;
+if marks>100 then
+raise wrong_marks;
+end if;
+dbms_output.put_line('ur marks'||marks);
+
+exception
+when wrong_marks then
+dbms_output.put_line('please enter proper marks i.e <=100');
+ end;
+/
+
+
+--------------------------- salary ---------------------
+
+
+declare
+wrong_amount exception;
+v_sal number;
+empid number:=&empno;
+amount number:=&amount;
+begin
+select sal into v_sal from emp where empno=empid;
+if amount>v_sal then
+raise wrong_amount;
+else
+dbms_output.put_line('Amount is deducted !!!');
+end if;
+
+exception
+when wrong_amount then
+dbms_output.put_line('Insufficient balance');
+end;
+/
+
+  
+
+=====================================================================================================================
+
+
+declare
+var number(4);
+begin
+var:=10000;
+dbms_output.put_line('var='||var);
+exception
+when value_error then
+dbms_output.put_line('error code='||SQLCODE||'message'||SQLERRM);
+end;
+/
+ 
+
+----X ------------------------
+
+
+

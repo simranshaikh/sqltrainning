@@ -1,0 +1,48 @@
+PLSQL DAY 3 Assignments :-------------------
+
+
+
+1)
+
+
+----------- creating table ------------------------
+create table messages(err_msg varchar2(250));
+-------------------------------------------------------
+
+
+
+declare
+salary number:=&s1;
+name emp.ename%type;
+
+begin
+
+select ename into name from emp where sal=salary;
+dbms_output.put_line(name||' have the salary '||salary);
+insert into messages values(name);
+
+
+exception
+
+when no_data_found
+then
+dbms_output.put_line('No employees with salary of'||salary);
+insert into messages values('No employees with salary of'||salary);
+
+when too_many_rows then
+
+dbms_output.put_line('too many rows'||'More than one employee with salary of'||salary);
+insert into messages values('Too many rows'||'More than one employee with salary of'||salary);
+
+
+when others
+then
+dbms_output.put_line('Some other error has occured');
+insert into messages values('Some other error has occured');
+end;
+/
+
+
+
+
+

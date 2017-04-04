@@ -1,0 +1,20 @@
+=========================== day 2 assignments ====================
+
+
+1)  	
+Write a PL/SQL block that takes a department number from a user and increases the salary of all the employees belonging to the department by 10%. The block should display on the screen how many records are updated.
+
+
+
+
+declare
+max_salary number;
+min_salary number;
+v_deptid number:=&eno;
+begin
+select max(salary),min(salary) into max_salary,min_salary from
+emp where department_id=v_deptid;
+dbms_output.put_line('max salary is :='||max_salary);
+dbms_output.put_line('min salary is :='||min_salary);
+end;
+/
