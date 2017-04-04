@@ -1,0 +1,98 @@
+PLSQL Day 1 assignments: ----------------
+4)
+declare
+a number := &num1;
+b number := &num2;
+result number;
+begin
+
+result:= (a/b + b);
+dbms_output.put_line(' result is '|| result);
+end;
+/
+
+========================================================================
+
+
+5)
+declare
+Max_sal number ;
+Min_sal number ;
+dept_id number :=&num1;
+begin
+select Max(salary), Min(salary)  into Max_sal,Min_sal from employees
+where department_id =dept_id;
+dbms_output.put_line(' max sal is ='||Max_sal);
+dbms_output.put_line(' min sal is ='||Min_sal);
+end ;
+/
+
+=========================================================================
+=========================================================================
+6)
+declare
+job_id varchar2(15):= '&jid';
+avg_sal number;
+begin
+select avg(sal) into avg_sal from emp where lower(job) =job_id ;
+dbms_output.put_line(' avg sal is ='||avg_sal);
+end;
+/
+=========================================================================
+7) 
+declare
+emp_id number:=&eid;
+e_sal number;
+begin
+select sal into e_sal from emp where empno= emp_id;
+if (e_sal<2500 )then
+dbms_output.put_line(' class=  LOW');
+elsif (e_sal >= 2500 and e_sal <5000)then
+dbms_output.put_line('class = MEDIUM');
+elsif(e_sal>=5000)then
+dbms_output.put_line('class = HIGH');
+end if;
+end;
+/
+=========================================================================
+8) 
+declare 
+mn number:=&num;
+begin
+select to_char(to_date(mn,'MM'),'MONTH') from dual;
+end;
+/
+
+
+
+
+
+===================================================================
+9)
+declare
+n number:=&num;
+i number ;
+fact number:=1;
+begin
+for i in 1..n
+loop
+fact:=fact*i;
+end loop;
+dbms_output.put_line(' factorial of no is= '||fact);
+end;
+/
+
+
+====================================================================
+
+10) Write a PL/SQL block that accepts Bill_no from a user. Declare a PL/SQL record to store the cust_id, the Plan name, Bill amount and Service name for that Bill_no.  Display the information on the screen.
+
+
+
+
+
+
+=======================================================================
+
+
+11) 
