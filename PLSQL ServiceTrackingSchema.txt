@@ -1,0 +1,103 @@
+drop table service_request cascade constraints;
+drop table service_owner cascade constraints;
+drop table customer cascade constraints;
+drop table service_Subarea cascade constraints;
+drop table Service_area cascade constraints;
+drop table service_category cascade constraints;
+drop table priority_range;
+
+create table service_category
+(cat_id number(2) constraint cat_pk primary key,
+cat_type varchar2(25),
+cat_desc varchar2(75));
+
+create table Service_area(
+Service_area_code number(3)constraint area_pk primary key,
+area_desc varchar2(50),
+cat_id number(2) references service_category(cat_id));
+
+create table service_Subarea(
+ Service_subarea_code number(3)constraint subarea_pk primary key,
+subarea_desc varchar2(50),
+area_code number(3) references Service_area(Service_area_code));
+
+create table customer(
+cust_id number(3) constraint cust_pk primary key,
+cust_name varchar2(35),
+cust_address varchar2(50),
+Cust_contact number(10),
+cust_type varchar2(25)default 'Silver');
+
+
+create table service_owner
+(owner_id number(3) constraint owner_pk primary key,
+owner_name varchar2(35),
+owner_designation varchar2(35));
+
+create table service_request
+( SR_id number(10) constraint sr_pk primary key,
+status varchar2(25) constraint sr_status_chk check(status in('open','pending','closed')),
+comments varchar2(75),
+SR_date date,
+cust_id number(3) references customer(cust_id),
+cat_id number(2) references service_category(cat_id),
+area_code number(3) references Service_area(Service_area_code),
+subarea_code number(3) references service_Subarea(Service_subarea_code),
+SR_owner number(3) references service_owner(owner_id),
+sr_priority number(2));
+
+create table priority_range
+(priority_code varchar2(20) constraint priority_pk primary key,
+minrange number(2),
+maxrange number(2));
+
+
+
+insert into service_category values(1,'ServiceRequest','Enquiry or Query');
+insert into service_category values(2,'TroubleTicket','Complaints or problem management');	
+insert into service_category values(3,'Adjustment','Adjustment'); 
+
+insert into Service_area values( 101,'Change Management',1 );
+insert into Service_area values( 102,'Query', 1);
+insert into Service_area values( 103,'Complaints', 2);
+insert into Service_area values( 104,'Adjustment',3);
+
+
+insert into service_Subarea values(201,'Change Billing Address',101);
+insert into service_Subarea values(202,	'Change of Billing Cycle',101);
+insert into service_Subarea values(203,	'Change of Bill Mode',101);
+insert into service_Subarea values(204,'Change of Payment Method',101);
+insert into service_Subarea values(205,	'Query on existing Product',102);
+insert into service_Subarea values(206,	'Query on due amount',102);
+insert into service_Subarea values(207,	'Query onpayment',102);
+insert into service_Subarea values(208,	'Payment Complaints',103);
+insert into service_Subarea values(209,	'Billing Complaints',103);
+insert into service_Subarea values(210,	'Device Complaints',103);
+insert into service_Subarea values(211,	'Activation Complaints',103);
+insert into service_Subarea values(212,	'Bill Adjustment',104);
+
+insert into customer values(501,'Rajesh','Karve Road Pune',9892345667,'Silver');
+insert into customer values(502,'Ramesh','Bandra Mumbai',9878345669,'Silver');
+insert into customer values(503,'Suresh','Chandivali Mumbai',8892345678,'Silver');
+insert into customer values(504,'Priya','Vimannagar Pune',9823456667,'Silver');
+insert into customer values(505,'Sandhya','Karve Road Pune',9856789667,'Silver');
+
+insert into service_owner values(801,'Deepali','Manager');
+insert into service_owner values(802,'Rani','CSR');
+insert into service_owner values(803,'Pankaj','CSR');
+insert into service_owner values(804,'Parag','Manager');
+insert into service_owner values(805,'Aparna','CSR');
+
+insert into priority_range values('HIGH',1,2);
+insert into priority_range values('MEDIUM',3,4);
+insert into priority_range values('LOW',4,5);
+ 
+
+insert into service_request values(300,'open','owner not assigned',sysdate,501,1,102,205,null,5);
+insert into service_request values(301,'pending','waiting for approval',sysdate+1,502,1,101,201,801,2);
+insert into service_request values(302,'open','owner not assigned',sysdate+1,504,2,103,209,null,4);
+insert into service_request values(303,'pending','waiting for documents',sysdate-2,503,1,101,201,803,1);
+insert into service_request values(304,'closed','closed successfully',sysdate-5,501,2,103,210,805,3);
+
+commit;
+

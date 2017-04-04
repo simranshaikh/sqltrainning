@@ -1,0 +1,102 @@
+2)Write a PL/SQL block to display the employee first name, salary and JOB_TITLE for the first five employees recorded in the “employees” table by making use of :
+a)Simple for loop with “EXIT WHEN” condition
+b)The “WHILE” condition
+c)Cursor FOR LOOP 
+
+a)--Simple for loop with “EXIT WHEN” condition
+
+DECLARE
+	CURSOR A IS SELECT FIRST_NAME,SALARY,JOB_ID FROM EMPLOYEES;
+	V_DATA A%ROWTYPE;
+BEGIN	
+	OPEN A;
+	LOOP
+	FETCH A INTO V_DATA;
+	DBMS_OUTPUT.PUT_LINE(V_DATA.FIRST_NAME || ' ' || V_DATA.SALARY || ' ' || V_DATA.JOB_ID);
+	EXIT WHEN A%ROWCOUNT >= 5;
+	END LOOP;
+END;
+/
+
+b)--The “WHILE” condition
+
+DECLARE
+	CURSOR A IS SELECT FIRST_NAME,SALARY,JOB_ID FROM EMPLOYEES;
+	V_DATA A%ROWTYPE;
+BEGIN	
+	OPEN A;
+	WHILE A%ROWCOUNT <= 4
+	LOOP
+	FETCH A INTO V_DATA;
+	DBMS_OUTPUT.PUT_LINE(V_DATA.FIRST_NAME || ' ' || V_DATA.SALARY || ' ' || V_DATA.JOB_ID);
+	END LOOP;
+	DBMS_OUTPUT.PUT_LINE('TOTAL RECORDS' || A%ROWCOUNT );
+END;
+/
+
+c)--Cursor FOR LOOP
+
+DECLARE
+	CURSOR A IS SELECT FIRST_NAME,SALARY,JOB_ID FROM EMPLOYEES;
+	V_DATA A%ROWTYPE;
+BEGIN	
+	OPEN A;
+	FOR V_VAR IN 1..5 
+	LOOP
+	FETCH A INTO V_DATA;
+	DBMS_OUTPUT.PUT_LINE(V_DATA.FIRST_NAME || ' ' || V_DATA.SALARY || ' ' || V_DATA.JOB_ID);
+	END LOOP;
+	DBMS_OUTPUT.PUT_LINE('TOTAL RECORDS' || A%ROWCOUNT );
+END;
+/
+--------------------------------------------------------------------------------------------------------------
+
+3)Write a PL/SQL block that displays names and salaries of all “Programmer” recorded in the employees table 
+by making use of a cursor.
+
+DECLARE
+	CURSOR A IS SELECT FIRST_NAME,SALARY FROM EMPLOYEES WHERE JOB_ID='IT_PROG';
+	V_DATA A%ROWTYPE;
+BEGIN
+	OPEN A;
+	LOOP
+	FETCH A INTO V_DATA;
+	EXIT WHEN A%NOTFOUND;
+	DBMS_OUTPUT.PUT_LINE
+	(
+	V_DATA.FIRST_NAME || ' ' || V_DATA.SALARY 
+	);
+	END LOOP;
+	CLOSE A;
+END;
+/
+--------------------------------------------------------------------------------------------------------------
+
+6)
+
+DECLARE
+   CURSOR A IS SELECT * FROM dept;
+   V_DEPT A%ROWTYPE;
+   CURSOR B(p_deptno IN NUMBER) IS SELECT empno,ename,sal,job FROM emp WHERE deptno=p_deptno;
+   V_EMP B%ROWTYPE;
+BEGIN
+   OPEN A;
+   LOOP
+   FETCH A INTO V_DEPT;
+   EXIT WHEN A%NOTFOUND;
+   DBMS_OUTPUT.PUT_LINE('---------------------------------------------------');
+   DBMS_OUTPUT.PUT_LINE('DEPARTMENT NO :'|| '' || V_DEPT.deptno || '  ' ||'DEPARTMENT NAME :' || '' || V_DEPT.dname);
+   DBMS_OUTPUT.PUT_LINE('---------------------------------------------------');
+   OPEN B(V_DEPT.deptno);
+   DBMS_OUTPUT.PUT_LINE( 'EMP_NO' || '   ' || 'ENAME' || '   ' || 'SALARY' || '   ' || 'JOB' );
+   LOOP
+   FETCH B INTO V_EMP;
+   EXIT WHEN B%NOTFOUND;
+   --DBMS_OUTPUT.PUT_LINE( 'EMP_NO' || '   ' || 'ENAME' || '   ' || 'SALARY' || '   ' || 'JOB' );
+   DBMS_OUTPUT.PUT_LINE( V_EMP.empno || '    ' || V_EMP.ename || '    ' || V_EMP.sal || '    ' || V_EMP.job );
+   END LOOP;
+   CLOSE B;
+   END LOOP;
+   CLOSE A;
+END;
+/

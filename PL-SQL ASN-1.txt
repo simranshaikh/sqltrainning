@@ -1,0 +1,90 @@
+3)What will be the values of the variables v_weight, v_message and v_new_locn at point 1 and point 2.
+
+
+DECLARE
+        v_weight NUMBER (3):=600;
+	v_message VARCHAR2(255):='Product 10012';
+BEGIN
+		DECLARE
+      			v_weight NUMBER(3) :=1;
+      			v_message VARCHAR2 (25):='Product 11001';
+      			V_new_locn VARCHAR2(25):='Europe';
+   		BEGIN
+    			v_weight := v_weight +1;
+  			DBMS_OUTPUT.PUT_LINE('Western' || ' ' || v_new_locn || ' ' || v_weight);
+			--  Point 1
+		END;
+	v_weight:=v_weight + 1;
+	DBMS_OUTPUT.PUT_LINE(v_message || ' ' || 'is in stock' || ' ' || v_weight);
+	-- Point 2
+END;
+/
+
+Output :
+Point 1 : Western Europe 2     
+Point 2 : Product 10012 is in stock 601	
+
+---------------------------------------------------------------------------------------------------------------------
+
+4)Write a PL/SQL block that accepts values of two non-zero integer numbers from user. 
+The block performs the following operation ( first_number/second_number + second_number). 
+The result of the operation should be stored in a PL/SQL variable and also displayed on the screen.
+
+DECLARE
+	V_NO1 	NUMBER(10)    := '&NO1';
+	V_NO2 	NUMBER(10)    := '&NO2';	 
+	V_RES   NUMBER(10)    := (V_NO1 / V_NO2) + V_NO2;	
+BEGIN
+	DBMS_OUTPUT.PUT_LINE('Result is : ' || V_RES);
+END;
+/
+----------------------------------------------------------------------------------------------------------------------
+
+5)Declare two SQL* plus variables named MAX_SALARY and MIN_SALARY that are of data type NUMBER.
+Write a PL/SQL block that accepts department_id value from a user, 
+selects the maximum salary and minimum salary paid in the department, 
+from the EMPLOYEES table and stores the corresponding values in MAX_SALARY and MIN_SALARY respectively. 
+Use appropriate SQL * plus command to see the modified values of MAX_SALARY and MIN_SALARY
+
+DECLARE
+	V_MAX_SALARY 	NUMBER(10);
+	V_MIN_SALARY 	NUMBER(10);
+	V_DEPTNO   	NUMBER(10) := '&DEPTNO';
+BEGIN
+	SELECT MAX(SAL),MIN(SAL) INTO V_MAX_SALARY,V_MIN_SALARY FROM EMP WHERE DEPTNO=V_DEPTNO;
+	DBMS_OUTPUT.PUT_LINE('MAX SAL :' || ' ' || V_MAX_SALARY || ' ' || 'MIN SAL : ' || ' ' || V_MIN_SALARY );
+END;
+/
+-----------------------------------------------------------------------------------------------------------------------
+
+6)Write a PL/SQL block that accepts job_id value from a user, calculates the average salary paid for that job. 
+The code should display the job and the average salary for that job.
+
+DECLARE
+	V_JOB   	VARCHAR2(10) := '&JOB';
+	V_AVGSAL	NUMBER(10);
+BEGIN
+	SELECT AVG(SAL) INTO V_AVGSAL FROM EMP WHERE JOB=V_JOB;
+	DBMS_OUTPUT.PUT_LINE('JOB :' || ' ' || V_JOB || ' ' || 'AVG SAL : ' || ' ' || V_AVGSAL );
+END;
+/
+------------------------------------------------------------------------------------------------------------------------
+
+7)Write a PL/SQL block that accepts employee_id from a user and retrieves the salary for the employee from the EMPLOYEES table. 
+It determines the salary class as per the following criteria and displays the salary and salary class on the screen
+Criteria for deciding salary class: 
+If the salary is less than 2500, then it comes under the class ‘LOW’
+If the salary is greater than or equal to 2500 and less than 5000, then it comes under class ‘MEDIUM’.
+If the salary is greater than or equal to 5000, then it comes under class ‘HIGH’
+
+
+
+
+
+
+
+
+
+
+
+

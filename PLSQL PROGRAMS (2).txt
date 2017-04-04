@@ -1,0 +1,236 @@
+DECLARE
+	V_NAME VARCHAR2(20) := 'ABHISHEK';
+	V_AGE  NUMBER(2)   :=20;
+	V_DOB  DATE  NOT NULL DEFAULT SYSDATE;
+	V_NRI  BOOLEAN      := FALSE;
+        C_PI CONSTANT NUMBER(4,2) := 3.14;
+	 C_g CONSTANT NUMBER(3,1) := 9.8;
+BEGIN
+NULL;
+END;
+.............................................................................................................
+
+ASSIGN1 QUES:4
+DECLARE
+	V_n1  NUMBER(2)   := '&V_n1';
+	V_n2  NUMBER(2)   := '&V_n2';
+	V_n3  NUMBER(2);
+BEGIN
+	V_n3 := (V_n1/V_n2+V_n2);
+	DBMS_OUTPUT.PUT_LINE('V_n3:'||V_n3);
+END;
+................................................................................................................
+DISTANCE USING FORMULA 
+DECLARE
+	V_X1 NUMBER(2)   := '&X1';
+	V_X2  NUMBER(2)   := '&V_X2';
+	V_Y1  NUMBER(2)   := '&V_Y1';
+        V_Y2 NUMBER(2)   := '&V_Y2';
+	V_RESULT NUMBER(2);
+BEGIN
+	V_RESULT := SQRT(POWER((V_X2-V_X1),2)+POWER((V_Y2-V_Y1),2));
+	DBMS_OUTPUT.PUT_LINE('RESULT'||V_RESULT);
+END;
+................................................................................................................
+CIRCUMFERENCE AND AREA OF CIRCLE
+DECLARE
+	V_X1 NUMBER(2)   := '&X1';
+	V_RESULT NUMBER(2);
+	V_RESULT1 NUMBER(2);
+BEGIN
+	V_RESULT := 2 * 3.14 * V_X1;
+	V_RESULT1 :=3.14 * V_X1**2;
+	DBMS_OUTPUT.PUT_LINE('RESULT'||V_RESULT);
+	DBMS_OUTPUT.PUT_LINE('RESULT1'||V_RESULT1);
+END;
+...............................................................................................................
+
+IF STRUCTURE
+
+IF V_NRI THEN
+DBMS_OUTPUT.PUT_LINE('V_NRI=TRUE');
+ELSE
+DBMS_OUTPUT.PUT_LINE('V_NRI=FALSE');
+END IF;
+
+...............................................................................................................
+LARGEST OF THREE NUMBERS
+DECLARE
+	V_n1  NUMBER(2)   := '&V_n1';
+	V_n2  NUMBER(2)   := '&V_n2';
+	V_n3  NUMBER(2)	  := '&V_n3';
+BEGIN
+	IF (( V_n1 > V_n2) AND (V_n1 > V_n3)) THEN
+	DBMS_OUTPUT.PUT_LINE('largest'||V_n1);
+	ELSIF (( V_n2 > V_n1) AND (V_n2 > V_n3)) THEN
+	DBMS_OUTPUT.PUT_LINE('largest'||V_n2);
+	ELSE
+	DBMS_OUTPUT.PUT_LINE('largest'||V_n3);
+	END IF;
+END;
+
+..................................................................................................................
+PRIME NO
+
+DECLARE
+	V_n1  NUMBER(2)   := '&V_n1';
+	V_CONTROL NUMBER(2) := 2;
+	V_FLAG NUMBER(2) := 0;
+BEGIN
+	WHILE V_CONTROL <= V_n1/2 
+	LOOP
+	IF ( V_n1 mod V_CONTROL = 0) THEN
+        V_FLAG := 1;
+	EXIT;
+END IF;
+	V_CONTROL := V_CONTROL+1;
+	END LOOP ;
+	IF V_FLAG = 1 THEN
+	DBMS_OUTPUT.PUT_LINE('NOT A PRIME NO');
+	ELSE
+	DBMS_OUTPUT.PUT_LINE('PRIME NO');
+	END IF;
+END;
+
+...................................................................................................................
+DAY 2 ASSIGNMENT 3
+
+DECLARE
+CURSOR A IS SELECT FIRST_NAME,SALARY FROM EMPLOYEES WHERE JOB_ID='IT_PROG';
+V_DATA A%ROWTYPE;
+BEGIN
+FOR V_DATA IN A
+LOOP
+DBMS_OUTPUT.PUT_LINE
+(
+V_DATA.FIRST_NAME||' '||V_DATA.SALARY);
+END LOOP;
+END;
+..........................................................................................................................
+DAY 2 ASSIGN 6
+
+DECLARE
+   CURSOR A IS SELECT * FROM dept;
+   V_DEPT A%ROWTYPE;
+   CURSOR B(p_deptno IN NUMBER) IS SELECT empno,ename,sal,job FROM emp WHERE deptno=p_deptno;
+   V_EMP B%ROWTYPE;
+BEGIN
+   OPEN A;
+   LOOP
+   FETCH A INTO V_DEPT;
+   EXIT WHEN A%NOTFOUND;
+   DBMS_OUTPUT.PUT_LINE('---------------------------------------------------');
+   DBMS_OUTPUT.PUT_LINE('DEPARTMENT NO :'|| '' || V_DEPT.deptno || '  ' ||'DEPARTMENT NAME :' || '' || V_DEPT.dname);
+   DBMS_OUTPUT.PUT_LINE('---------------------------------------------------');
+   OPEN B(V_DEPT.deptno);
+   DBMS_OUTPUT.PUT_LINE( 'EMP_NO' || '   ' || 'ENAME' || '   ' || 'SALARY' || '   ' || 'JOB' );
+   LOOP
+   FETCH B INTO V_EMP;
+   EXIT WHEN B%NOTFOUND;
+   --DBMS_OUTPUT.PUT_LINE( 'EMP_NO' || '   ' || 'ENAME' || '   ' || 'SALARY' || '   ' || 'JOB' );
+   DBMS_OUTPUT.PUT_LINE( V_EMP.empno || '    ' || V_EMP.ename || '    ' || V_EMP.sal || '    ' || V_EMP.job );
+   END LOOP;
+   CLOSE B;
+   END LOOP;
+   CLOSE A;
+END;
+---------------------------------------------------------------------------------------------------------------
+DAY2 ASSIGN1
+
+DECLARE
+CURSOR A(P_DEPTNO NUMBER) IS SELECT SALARY,FIRST_NAME FROM EMPLOYEES
+WHERE DEPARTMENT_ID=P_DEPTNO FOR UPDATE OF SALARY;
+ V_DATA A%ROWTYPE;
+ BEGIN
+FOR V_DATA IN A(&DEPTNO)
+ LOOP
+ UPDATE EMPLOYEES SET SALARY=(SALARY+SALARY*0.1) WHERE CURRENT OF A;
+ DBMS_OUTPUT.PUT_LINE(V_DATA.SALARY || ''||V_DATA.FIRST_NAME);
+ END LOOP;
+END;
+---------------------------------------------------------------------------------------------------------------
+
+
+day 2 assign 5
+
+DECLARE
+CURSOR A IS SELECT SALARY,FIRST_NAME,DEPARTMENT_ID,JOB_ID FROM EMPLOYEES FOR UPDATE OF SALARY;
+ V_DATA A%ROWTYPE;
+ BEGIN
+FOR V_DATA IN A
+ LOOP
+ IF V_DATA.JOB_ID='SH_CLERK' and V_DATA.DEPARTMENT_ID='10'
+THEN
+ UPDATE EMPLOYEES SET SALARY=(SALARY+SALARY*0.2) WHERE CURRENT OF A;
+ DBMS_OUTPUT.PUT_LINE(V_DATA.SALARY || ''||V_DATA.FIRST_NAME);
+  ELSIF V_DATA.JOB_ID='ST_MAN' and V_DATA.DEPARTMENT_ID='20'
+THEN
+UPDATE EMPLOYEES SET SALARY=(SALARY+SALARY*0.05) WHERE CURRENT OF A;
+DBMS_OUTPUT.PUT_LINE(V_DATA.SALARY || ''||V_DATA.FIRST_NAME);
+else
+UPDATE EMPLOYEES SET SALARY=(SALARY+SALARY*0.1) WHERE CURRENT OF A;
+DBMS_OUTPUT.PUT_LINE(V_DATA.SALARY || ''||V_DATA.FIRST_NAME);
+end if;
+END LOOP;
+END;
+/
+.................................................................................
+
+CREATE TYPE ICECREAM_TYPE IS OBJECT
+(
+	FLOVORNO NUMBER(2),
+	FNAME VARCHAR2(10),
+	COST NUMBER(3),
+	HASTOPPING CHAR(1)
+);
+
+CREATE TYPE ICECREAM AS TABLE OF ICECREAM_TYPE;
+
+CREATE TABLE MENU
+(
+	MENUNO NUMBER(2),
+	MAINCOURSE VARCHAR2(15),
+	DESERT ICECREAM,
+	COLDRINK CHAR(6) 
+)NESTED TABLE DESERT STORE AS ICE_CREAM_NT
+
+INSERT INTO MENU
+VALUES
+(
+   1,'CHICKEN',
+   ICECREAM
+   (
+   ICECREAM_TYPE(10,'CHOCO',150,'Y'),
+   ICECREAM_TYPE(11,'CHOCO',160,'Y')
+   ),
+   'pepsi'
+)
+
+
+----------------------------------------------------------------------------------------------
+
+
+fUNCTIONS NO.2
+
+ CREATE OR REPLACE FUNCTION USER_ANNUAL_COMP(P_ENO NUMBER,P_SAL NUMBER,P_COMM NUMBER)
+ RETURN NUMBER
+ AS
+ BEGIN
+    IF P_SAL IS NULL THEN
+            
+            RETURN (P_COMM)*12;
+    ELSIF P_COMM IS NULL THEN
+           
+            RETURN (P_SAL)*12;
+    ELSE
+            RETURN (P_SAL+P_COMM)*12;
+ END IF;
+ END;
+ /
+
+SELECT DISTINCT USER_ANNUAL_COMP(7499,1600,300) FROM EMP
+
+----------------------------------------------------------------------------------------------------
+
+
+

@@ -1,0 +1,118 @@
+CREATE TABLE programmer
+(Name Varchar2(8) ,
+Emp_id varchar2(4) Primary key,
+DOB Date Not Null,
+DOJ Date Not Null,
+Sex Varchar2(1)	Not Null,
+Prof1 Varchar2(8),
+Prof2 Varchar2(8),
+Salary Number(5) Not Null)
+/
+
+CREATE TABLE package
+(Emp_id Varchar2(4) REFERENCES programmer(Emp_id),
+Title Varchar2(20) Not Null,
+Dev_In Varchar2(8) Not Null,
+SCost Number(8,2),
+DCost Number(6),
+Sold Number(3),
+available number(3))
+/
+
+CREATE TABLE Studies
+(Emp_id  Varchar2(4) REFERENCES programmer(Emp_id),
+Institute Varchar2(10) Not Null,
+Course Varchar2(5) Not Null,
+start_date date)
+/
+
+CREATE TABLE course
+(Institute Varchar2(10) Not Null,
+Course Varchar2(5) Not Null,
+duration_in_months number(3) Not Null,
+ccost numBer(6),
+Launch_date date,
+status char(1))
+/
+
+INSERT INTO programmer VALUES('ANANYA','A102',add_months((sysdate-300),-30),sysdate-300,'M','JAVA','VB',32000);
+INSERT INTO programmer VALUES('ASHRAF','A110',add_months((sysdate-310),10),sysdate-450,'M','ASP','COBOL',28000);
+INSERT INTO programmer VALUES('JEET','J111',add_months((sysdate-320),62),sysdate-1000,'M','ORACLE','JAVA',41000);
+INSERT INTO programmer VALUES('FIONA','J112',add_months((sysdate-260),36),sysdate-2000,'F','COBOL','SQL',30000);
+INSERT INTO programmer VALUES('KIRTI','K009',add_months((sysdate-2840),100),sysdate-3000,'F','C','SQL',29000);
+INSERT INTO programmer VALUES('MARIA','M008',add_months((sysdate-350),120),sysdate-3600,'F','C++','ORACLE',45000);
+INSERT INTO programmer VALUES('NILESH','N007',add_months((sysdate-400),200),sysdate-1500,'M','COBOL','SQL',25000);
+INSERT INTO programmer VALUES('PARAG','P006',add_months((sysdate-305),240), sysdate-1800,'M','JAVA','ORACLE',28000);
+INSERT INTO programmer VALUES('QADIR','Q005',add_months((sysdate-270),40),sysdate-300,'M','C#','ASP',30000);
+INSERT INTO programmer VALUES('RAMESH','R004',add_months((sysdate-340),270),sysdate-40,'M','JAVA','VB',32000);
+INSERT INTO programmer VALUES('RITU','R003',add_months((sysdate-350),300),sysdate-250,'F','VB','SQL',25000);
+INSERT INTO programmer VALUES('REVA','R002',add_months((sysdate-420),320), sysdate-500,'F','C','COBOL',36000);
+INSERT INTO programmer VALUES('REVATI','R001',last_day(add_months(sysdate-310),sysdate-900)),'F','JAVA','C#',37000);
+INSERT INTO programmer VALUES('VIJAYA','V014',add_months((sysdate-340),150),sysdate-600,'F','FOXPRO','C',35000);
+insert into programmer values('NEETA','N008',last_day(add_months((sysdate-360),sysdate-560)),'F','C','JAVA',30000);
+insert into programmer values('RICHA','R008',add_months((sysdate-380),100),sysdate-10,'F','C','JAVA',30000);
+INSERT INTO programmer VALUES('KETAKI','K040',add_months((sysdate-400),20),sysdate-45,'F','C','C++',29000);
+
+
+INSERT INTO package VALUES('A102','PARATROOPER','VB',3099.95,60000,43,40);
+INSERT INTO package VALUES('A102','VEGAS','JAVA',70500.95,160000,9,49);
+INSERT INTO package VALUES('J111','SOLSUITE','JAVA',8000.00,75000,10,30);
+INSERT INTO package VALUES('J111','SHAREKHAN','ORACLE',30000.00,120000,14,60);
+INSERT INTO package VALUES('J112','INVENTORY CONTROL','COBOL',30000.00,35000,0,78);
+INSERT INTO package VALUES('K009','PAYROLL PACKAGE','SQL',9000.00,20000,7,80);
+INSERT INTO package VALUES('M008','FINANCIAL A/C S/W','ORACLE',118000.00,185000,4,56);
+INSERT INTO package VALUES('M008','CODE GENERATOR','C',45000.00,120222,23,88);
+INSERT INTO package VALUES('M008','SMART','C++',3000.00,12000,84,33);
+INSERT INTO package VALUES('P006','PHOTOSHOP','JAVA',7500.00,50000,11,33);
+INSERT INTO package VALUES('Q005','LECTORA','C#',4099.95,5030,114,90);
+INSERT INTO package VALUES('Q005','VACCINES','C',1900.00,3400,21,44);
+INSERT INTO package VALUES('R004','HOTEL MANAGEMENT','SQL',12000.00,35000,4,77);
+INSERT INTO package VALUES('R004','FPROT','JAVA',999.95,45000,73,80);
+INSERT INTO package VALUES('R002','ROBOHELP','C#',25000,60000,6,34);
+INSERT INTO package VALUES('R002','MACH','C',7250,50000,51,80);
+INSERT INTO package VALUES('R001','HOTEL MANAGEMENT','Java',1100,75000,2,66);
+INSERT INTO package VALUES('R001','HOT POTATOES','BASIC',3200,21000,15,98);
+INSERT INTO package VALUES('V014','JCREATOR','C',9000,70000,6,44);
+INSERT INTO package VALUES('K009','QUANTUM','JAVA',8000,80000,7,35);
+INSERT INTO package VALUES('J112','TANK RACER','C',30000.00,35000,0,80);
+INSERT INTO package VALUES('K009','Realtime','COBOL',20000.00,45000,0,45);
+
+
+INSERT INTO Studies VALUES('A102','SILVERCRES','PGDCA',sysdate-300);
+INSERT INTO Studies VALUES('A110','CCIT','DCA',sysdate-50);
+INSERT INTO Studies VALUES('J111','SSIL','DCA',sysdate-123);
+INSERT INTO Studies VALUES('J112','BITS','DCA',sysdate-234);
+INSERT INTO Studies VALUES('K009','PRAGATI','DCA',sysdate-34);
+INSERT INTO Studies VALUES('M008','SILVERCRES','DCA',sysdate-56);
+INSERT INTO Studies VALUES('N007','PRAGATI','DAP',sysdate-78);
+INSERT INTO Studies VALUES('P006','PRAGATI','DcAP',sysdate-356);
+INSERT INTO Studies VALUES('Q005','APPLE','HDCP',sysdate-111);
+INSERT INTO Studies VALUES('R004','SILVERCRES','PGDCA',sysdate-123);
+INSERT INTO Studies VALUES('R003','SSIL','DCAP',sysdate-345);
+INSERT INTO Studies VALUES('R002','APPLE','DCA',sysdate-88);
+INSERT INTO Studies VALUES('R001','SILVERCRES','DAP',sysdate-90);
+INSERT INTO Studies VALUES('V014','CCIT','DCA',sysdate-23);
+INSERT INTO Studies VALUES('K040','BDPS','DCA',sysdate-23);
+
+INSERT INTO course values('SILVERCRES','PGDCA',12,40000,sysdate-400,'V');
+INSERT INTO course values('SILVERCRES','DCA',3,4000,sysdate-345,'V');
+INSERT INTO course values('SILVERCRES','DAP',6,20000,sysdate-381,'V');
+INSERT INTO course values('SILVERCRES','DCAP',4,6000,sysdate-401,'V');
+INSERT INTO course values('CCIT','DCA',3,5000,sysdate-346,'V');
+INSERT INTO course values('CCIT','DAP',6,18000,sysdate-382,'V');
+INSERT INTO course values('CCIT','DCAP',4,7000,sysdate-402,'V');
+INSERT INTO course values('SSIL','DCA',3,4000,sysdate-347,'V');
+INSERT INTO course values('SSIL','DCAP',12,45000,sysdate-383,'V');
+INSERT INTO course values('BITS','DCA',3,6000,sysdate-403,'I');
+INSERT INTO course values('BITS','DAP',6,22000,sysdate-348,'V');
+INSERT INTO course values('BITS','PGDCA',12,50000,sysdate-384,'V');
+INSERT INTO course values('PRAGATI','DCA',3,7000,sysdate-404,'V');
+INSERT INTO course values('PRAGATI','DAP',6,10000,sysdate-349,'V');
+INSERT INTO course values('PRAGATI','DCAP',4,8000,sysdate-385,'V');
+INSERT INTO course values('PRAGATI','PGDCA',12,24000,sysdate-405,'I');
+INSERT INTO course values('APPLE','HDCP',24,70000,sysdate-350,'V');
+INSERT INTO course values('APPLE','DCA',3,2000,sysdate-386,'V');
+INSERT INTO course values('APPLE','PGDCA',12,30000,sysdate-406,'V');
+INSERT INTO course values('BDPS','DCA',3,2000,sysdate-386,'V');
+INSERT INTO course values('BDPS','PGDCA',12,30000,sysdate-406,'V');
+commit;
