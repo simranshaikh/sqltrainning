@@ -1,0 +1,100 @@
+drop table scholars cascade constraints;
+drop table research_domain cascade constraints;
+drop table publications cascade constraints;
+drop table payments cascade constraints;
+drop table author_Paper_details;
+drop type PaperList;
+
+create table scholars
+(
+ pri_authr_id varchar2(5) constraint pk_pri_id primary key,
+ pri_authr_name varchar2(15),
+ country char(20) not null,
+ email_id varchar2(20) unique
+);
+
+insert into scholars values('A001','Kannika','India','mkv_in@gmail.com');
+insert into scholars values('A002','Kiran','India','abc_in@gmail.com');
+insert into scholars values('A003','Bhogle','India','bbb_in@gmail.com');
+insert into scholars values('A004','David','USA','dvd_us@gmail.com');
+insert into scholars values('A005','CheonYo','China','chen_cina@gmail.com');
+insert into scholars values('A006','Robert','UK','rbt_uk@gmail.com');
+commit;
+
+create table research_domain
+(
+ domain_id varchar2(5) constraint pk_did primary key,
+ domain_name varchar2(20),
+ publication_fee number(4),
+ add_chrg_per_page number(2));
+
+insert into research_domain values('D001','DataMining',300,5);
+insert into research_domain values('D002','CloudComputing',250,5);
+insert into research_domain values('D003','ImageProcessing',250,3);
+insert into research_domain values('D004','Networking',200,2);
+commit;
+
+create table publications
+(
+ paper_id varchar2(5) constraint pk_pid primary key,
+ pri_authr_id varchar2(5) references scholars,
+ domain_id varchar2(5) references research_domain,
+ title varchar2(30),
+ status varchar2(10), 
+ date_of_publish date,
+ no_of_pages number(2),
+ remarks varchar2(20)
+);
+
+insert into publications values('P001','A001','D001','Datamining_applications','Published',sysdate,10,'Original Work');
+insert into publications values('P002','A002','D001','Datamining_algorithms','Review',sysdate+20,12,null);
+insert into publications values('P003','A001','D002','Effectivenessof loud','Rejected',null,10,'Copied Content');
+insert into publications values('P004','A001','D001','Rule_Mining_techniques','Accepted',sysdate+10,14,'Ready for publish');
+insert into publications values('P005','A006','D001','NRule-Algorithm','Review',sysdate+20,10,null);
+insert into publications values('P006','A001','D001','GeneticAlgothm in Mining','Published',sysdate-20,8,'Noval Idea');
+insert into publications values('P007','A002','D001','GA in RuleMining','Published',sysdate-3,10,'Good work');
+insert into publications values('P008','A001','D001','Mining and GSP','Published',sysdate-10,10,'Extendedwork');
+
+create table payments 
+(
+ voucher_id varchar2(5) constraint pk_vou_id primary key,
+ paper_id varchar2(5) references publications,
+ bank_ifsc varchar(10) not null,
+ total_fee_paid number(4),
+ sender_ac_no varchar2(10),
+ date_of_payment date
+);
+
+insert into payments values('V001','P001','SMM0012',300,'kv0031502',sysdate-27);
+insert into payments values('V002','P002','KM0011',310,'mn001231',sysdate-27);
+insert into payments values('V003','P007','SMM0012',300,'abc_smeone',sysdate-15);
+insert into payments values('V004','P008','SMM0012',300,'author212',sysdate-15);
+
+Create  or replace type PaperList as varray(10) of varchar2(5);
+/
+
+create table author_Paper_details
+( Author_id varchar2(5),
+  Author_name varchar2(20),
+ Paper_id  PaperList
+);
+
+insert into author_Paper_details values('A001','Kannika',PaperList('P001','P004','P003','P006'));
+
+insert into author_Paper_details values('A002','Kiran',PaperList('P002','P007'));
+
+commit;
+set linesize 120;
+set pagesize 120;
+select * From scholars;
+select * From research_domain;
+select * from publications;
+select * From payments;
+select * from author_Paper_details
+
+
+
+
+
+
+

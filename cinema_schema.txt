@@ -1,0 +1,57 @@
+drop table Movie_details cascade constraints;
+drop table theatre cascade constraints;
+drop table show cascade constraints;
+drop table booking;
+
+create table Movie_details(movie_id varchar2(10) primary key,movie_name varchar2(25) unique,language varchar2(15),genre varchar2(20),duration number(3,2),date_of_release date);
+
+
+create table theatre(theatre_id varchar2(10) primary key,theatre_name varchar2(20) unique,Address varchar2(40),Locality varchar2(30),city varchar2(20));
+
+create table show(show_id number(4) primary key,Show_name varchar2(15) unique,show_time varchar2(8) not null);
+
+create table booking(Book_id number(5) primary key,Booking_date date not null,Person_booked varchar2(15),theartre_id varchar2(10) references theatre(theatre_id),movie_id varchar2(10) references movie_details(movie_id),show_id number references show(show_id),No_of_tickets number check (no_of_tickets>0));
+
+
+insert into Movie_details values('Mov101','Paramathma','Kannada','Romantic-Comedy',2.45,'06-oct-2011');
+insert into Movie_details values('Mov102','Rascals','Hindi','Action-Comedy',2.06,'06-Oct-2011');
+insert into Movie_details values('Mov103','Drive','English','Action-Dram',2.00,'30-sep-2011');
+insert into Movie_details values('Mov104','30 Minutes or Less','English','Adventure-comedy',1.23,'07-oct-2011');
+insert into Movie_details values('Mov105','Dookudu','Telugu','Action',2.45,'23-sep-2011');
+insert into Movie_details values('Mov106','Maryada Ramanna','Kannada','Comedy',2.33,'21-sep-2011');
+insert into Movie_details values('Mov107','Force','Hindi','Action-Drama',2.20,'30-sep-2011');
+
+insert into theatre values('Trt01','Sampige Theatre','Sampige Road','Malleshwaram','Bangalore');
+insert into theatre values('Trt02','Nanda Theatre','3rd Block','Jayanagar','Bangalore');
+insert into theatre values('Trt03','Puttanna Theatre','9th Main Road','Jayanagar','Bangalore');
+insert into theatre values('Trt04','Rex Theatre','No.12 ashoka nagar','Brigade Road','Bangalore');
+insert into theatre values('Trt05','Sterling Theatre','No.55 Industrial Suburb 1St Stage','Vishweshwara Nagar','Mysore');
+insert into theatre values('Trt06','Gokul Theatre','No.1/4 Gokula Extension','Krs Road','Mysore');
+insert into theatre values('Trt07','Adlabs Cinemas','Adlabs Bharath Mall Op Ksrtc','Bejai','Mangalore');
+
+
+
+insert into show values(201,'Morning show','10:00 AM');
+insert into show values(202,'Matinee show','1:30 PM');
+insert into show values(203,'Evening show','4:30 PM');
+insert into show values(204,'Night show','7:30 PM');
+
+
+insert into booking values(5001,'15-JUL-2013','Vikram','Trt01','Mov104',204,2);
+insert into booking values(5002,'15-JUL-2013','Anuj','Trt04','Mov102',203,4);
+insert into booking values(5003,'16-AUG-2013','Anitha','Trt01','Mov101',201,6);
+insert into booking values(5004,'18-OCT-2013','Vicky','Trt04','Mov104',201,10);
+insert into booking values(5005,'25-AUG-2013','Vikram','Trt07','Mov107',202,5);
+insert into booking values(5006,'16-SEP-2013','ramya','Trt01','Mov101',201,7);
+insert into booking values(5007,'12-JUL-2013','Nitu','Trt05','Mov105',203,3);
+insert into booking values(5008,'13-OCT-2013','Hari','Trt06','Mov103',202,1);
+insert into booking values(5009,'13-JUL-2013','Manoj','Trt07','Mov103',204,3);
+insert into booking values(5010,'20-OCT-2013','Prasad','Trt06','Mov107',201,12);
+
+commit;
+
+
+
+
+
+
