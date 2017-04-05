@@ -1,0 +1,134 @@
+1) ----------- create table(separately) ------------------------
+
+
+create table messages(err_msg varchar2(250));
+
+
+-------------------------------------------------------
+
+
+
+declare
+salary number:=&s1;
+name emp.ename%type;
+
+begin
+
+select ename into name from emp where sal=salary;
+dbms_output.put_line(name||' have the salary '||salary);
+insert into messages values(name);
+
+
+exception
+
+when no_data_found
+then
+dbms_output.put_line('No employees with salary of'||salary);
+insert into messages values('No employees with salary of'||salary);
+
+when too_many_rows then
+
+dbms_output.put_line('too many rows'||'More than one employee with salary of'||salary);
+insert into messages values('Too many rows'||'More than one employee with salary of'||salary);
+
+
+when others
+then
+dbms_output.put_line('Some other error has occured');
+insert into messages values('Some other error has occured');
+end;
+/
+
+
+
+
+
+3) DECLARE
+  	DUPLICATE_PRESIDENT EXCEPTION;
+	CNT NUMBER;
+
+BEGIN
+	SELECT COUNT(*) INTO CNT FROM EMP WHERE 	JOB='PRESIDENT';
+	DBMS_OUTPUT.PUT_LINE(CNT);
+	IF CNT>1 THEN
+	RAISE DUPLICATE_PRESIDENT;
+	END IF;
+EXCEPTION
+
+	WHEN DUPLICATE_PRESIDENT THEN
+	DBMS_OUTPUT.PUT_LINE('MORE THAN 1 PRESIDENT NOT ALLOWED');
+
+
+END;
+/
+
+
+
+
+
+
+
+5) 
+DECLARE
+ 
+ BID BOOKING.BOOK_ID%TYPE;
+  BDATE BOOKING.BOOKING_DATE%TYPE;
+ BP   BOOKING.PERSON_BOOKED%TYPE;
+TID BOOKING.THEATRE_ID%TYPE;
+MID BOOKING.MOVIE_ID%TYPE;
+SID BOOKING.SHOW_ID%TYPE;
+NTICKETS BOOKING.NO_OF_TICKETS%TYPE;
+B EXCEPTION;
+BDATE1 EXCEPTION;
+BPERSON  EXCEPTION;
+TID1 EXCEPTION;
+MID1 EXCEPTION;
+SID1 EXCEPTION;
+
+
+BEGIN
+	
+	 BID :=SEQ.NEXT_VAL;
+	 DBMS_OUTPUT.PUT_LINE('YOUR BOOKING ID IS:'||BID);
+	 IF BID!=(SEQ.NEXT_VAL) THEN
+	RAISE B;
+	END IF;
+	 BDATE :='&bookingdate';
+	IF BDATE!=SYSDATE THEN
+	RAISE BDATE;
+	END IF;
+	BP :='&BOOKINGPERSON';
+	
+	TID :='&THEATREID';
+	IF TID NOT LIKE 'TRT% ' THEN
+	RAISE TID1;
+	END IF;
+	MID:='&MOVIEID';
+	IF MID NOT LIKE 'Mov% ' THEN
+	RAISE MID1;
+	END IF;
+	SID :='&SHOWID';
+	NTICKETS:='&NOOFTICKETS';
+	IF NTICKETS!=2 THEN
+	DBMS_OUTPUT.PUT_LINE('
+	INSERT INTO BOOKING VALUES(BID,BDATE,BP,TID,MID,SID);
+	DBMS_OUTPUT.PUT_LINE('1 ROW INSERTED');
+	
+
+EXCEPTION
+	WHEN B THEN
+	DBMS_OUTPUT.PUT_LINE('PLS ENTER UNIQUE BOOKING ID');
+	WHEN BDATE  THEN
+	DBMS_OUTPUT.PUT_LINE('PLS ENTER TODAYS DATE');
+	WHEN TID1 THEN
+	DBMS_OUTPUT.PUT_LINE('PLS ENTER A VALID THEATRE_ID');
+	WHEN MID1 THEN
+	DBMS_OUTPUT.PUT_LINE('PLS ENTER VALID MOVIE ID');
+	
+	
+
+END;
+/
+
+	
+

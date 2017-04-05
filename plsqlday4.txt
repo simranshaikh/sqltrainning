@@ -1,0 +1,328 @@
+PLSQL Day 4 :PROCEDURE
+
+
+create or replace procedure display_message as
+begin
+dbms_output.put_line('hello');
+end;
+/
+
+
+
+---> Procedure created.
+
+SQL> execute display_message;
+hello
+
+PL/SQL procedure successfully completed.
+
+SQL> begin
+  2  display_message;
+  3  end;
+  4  /
+hello
+
+PL/SQL procedure successfully completed.
+
+
+-----------------------------------------------------------------------------
+
+
+
+create or replace procedure display_message as
+v_sal emp.sal%type;
+begin
+select sal into v_sal from emp where empno=7369;
+dbms_output.put_line('salary is:'||v_sal);
+end;
+/
+
+
+
+----> Procedure created.
+
+SQL> execute display_message;
+salary is800
+
+PL/SQL procedure successfully completed.
+
+SQL> begin
+  2  display_message;
+  3  end;
+  4  /
+salary is:800
+
+PL/SQL procedure successfully completed.
+
+
+---------------------------------------------------------------------------------------
+
+
+
+create or replace procedure display_message as
+v_sal emp.sal%type;
+begin
+select sal into v_sal from emp where empno=123;
+dbms_output.put_line('salary is:'||v_sal);
+exception
+when no_data_found then
+dbms_output.put_line('Empno is not valid');
+end;
+/
+
+
+Procedure created.
+
+SQL> execute display_message;
+Empno is not valid
+
+PL/SQL procedure successfully completed.
+
+
+
+-----------------------------------------------------------------------------
+
+check if salary is greater than 20000 or not? 
+
+
+create or replace procedure display_message as
+v_sal emp.sal%type;
+begin
+select sal into v_sal from emp where empno=7839;
+dbms_output.put_line('salary is:'||v_sal);
+if v_sal>20000 then
+dbms_output.put_line('salary >20000');
+else
+dbms_output.put_line('salary<20000');
+end if;
+exception
+when no_data_found then
+dbms_output.put_line('Empno is not valid');
+end;
+/
+
+---> Procedure created.
+
+SQL> execute display_message;
+salary is:5000
+salary<20000
+
+PL/SQL procedure successfully completed.
+
+----------------------------------------------------------------------------
+
+same example using parameter:-
+
+
+create or replace procedure get_sal_info(p_empno number) as
+v_sal emp.sal%type;
+begin
+select sal into v_sal from emp where empno=p_empno;
+dbms_output.put_line('salary is:'||v_sal);
+if v_sal>20000 then
+dbms_output.put_line('salary >20000');
+else
+dbms_output.put_line('salary<20000');
+end if;
+exception
+when no_data_found then
+dbms_output.put_line('Empno is not valid');
+end;
+/
+
+
+-----> Procedure created
+
+SQL> execute get_sal_info(7839);
+salary is:5000
+salary<20000
+
+PL/SQL pdederocedure successfully completed.
+
+
+
+declare
+v_empno emp.sal%type:=7788;
+begin
+get_sal_info(v_empno);
+end;
+/
+
+
+salary is:3000
+salary<20000
+
+PL/SQL procedure successfully completed.
+
+
+--------------------------------------
+dept no as parameter
+
+
+
+create or replace procedure get_details(p_deptno number) as
+v_name varchar2(20);
+v_sal varchar2(20);
+
+begin
+select ename,sal into v_name,v_sal from emp where deptno=p_deptno;
+dbms_output.put_line(v_name||' '||v_sal);
+
+exception
+when no_data_found then
+dbms_output.put_line('deptno is not valid');
+end;
+/
+
+
+
+
+----------------- TYPES OF Procedure ------------------------
+
+
+IN  read only
+OUT write only
+IN Out  read-write
+
+
+------------------------------------OUT -------------------
+
+create or replace procedure get_sal_info(p_empno number,p_sal out number) as
+begin
+select sal into p_sal from emp where empno=p_empno;
+dbms_output.put_line('salary is:'||p_sal);
+if p_sal>20000 then
+dbms_output.put_line('salary >20000');
+else
+dbms_output.put_line('salary<20000');
+end if;
+exception
+when no_data_found then
+dbms_output.put_line('Empno is not valid');
+end;
+/
+
+----> calling :
+
+declare
+var_sal emp.sal%type;
+begin
+get_sal_info(7788,var_sal);
+dbms_output.put_line('sal from caller block'||'  '||var_sal);
+end;
+/
+
+---> output :
+
+salary is:3000
+salary<20000
+sal from caller block  3000
+
+PL/SQL procedure successfully completed.
+
+
+----------------------------------------- IN OUT -------------------------------------
+
+
+create or replace procedure get_sal_info(p_empno number,p_sal in out number) as
+begin
+dbms_output.put_line('sal in procedure b4 modification ='||p_sal);
+
+select sal into p_sal from emp where empno=p_empno;
+dbms_output.put_line('salary is:'||p_sal);
+if p_sal>20000 then
+dbms_output.put_line('salary >20000');
+else
+dbms_output.put_line('salary<20000');
+end if;
+exception
+when no_data_found then
+dbms_output.put_line('Empno is not valid');
+end;
+/
+
+declare
+var_sal emp.sal%type:=1000;
+begin
+get_sal_info(7788,var_sal);
+dbms_output.put_line('sal from caller block'||'  '||var_sal);
+end;
+/
+
+
+sal in procedure b4 modification =1000
+salary is:3000
+salary<20000
+sal from caller block  3000
+
+
+
+
+
+
+
+select get_sal(7788) from dual;
+
+create or replace procedure sal_dis(p_empno,empno%type) as
+v_sal emp.sal%type;
+begin
+v_sal:=get_sal(p_empno);
+if v_sal>10000 then
+update emp set sal=sal+1000 where empno=p_empno;
+else
+update emp set sal=sal+2000 where empno=p_empno;
+end;
+/  
+
+
+create or replace procedure sal_dis(p_empno,empno%type) as
+
+begin
+if get_sal(p_empno)>10000 then
+
+update emp set sal=sal+1000 where empno=p_empno;
+else
+update emp set sal=sal+2000 where empno=p_empno;
+end if;
+end;
+/  
+
+
+execute sal_dis(7788);
+
+
+
+=====================================
+
+
+
+
+create or replace function get_sal(p_empno emp,empno%type) return boolean as
+v_sal emp.sal%type;
+begin
+select sal into v_sal from emp where empno=p_empno;
+dbms_output.put_line('sal='||v_sal);
+if v_sal>20000 then
+
+dbms_output.put_line('greater than 20000');
+return true;
+else
+dbms_output.put_line('lesss than 20000');
+
+return false;
+end if;
+
+exception
+when no_data_found then
+dbms_output.put_line('empno not avail');
+end;
+
+
+begin
+if get_sal(7788) then
+dbms_output.put_line('from caller >20000');
+else
+dbms_output.put_line('from caller<20000');
+end if;
+end;
+/

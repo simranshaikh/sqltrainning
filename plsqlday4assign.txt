@@ -1,0 +1,117 @@
+PLSQL day 4 assignments ----------->
+
+
+
+
+1)
+
+ create or replace procedure u_q_e(p_empno number,p_mysal out number,p_myjob out varchar2) as
+
+begin
+
+select sal,job into p_mysal,p_myjob from emp where empno=p_empno;
+dbms_output.put_line('salary is:'||p_mysal||' job is: '||p_myjob);
+
+exception
+when no_data_found then
+dbms_output.put_line('Emp no is not available');
+end;
+/
+
+-----calling-----
+
+declare
+var_sal number;
+var_job varchar2(20);
+begin
+u_q_e(7788,var_sal,var_job);
+dbms_output.put_line('sal and job from caller block is '||var_sal||'  '||var_job);
+end;
+/
+
+
+=============================================================================================
+
+2)
+
+
+create or replace function uc(p_eno emp.empno%type,p_sal out emp.sal%type,p_comm out emp.comm%type) return number as
+annual_comm number;
+begin
+select sal,comm into p_sal,p_comm from emp where empno=p_eno;
+annual_comm:=(p_sal+nvl(p_comm,0))*12;
+dbms_output.put_line('annual commission is:'||annual_comm);
+return annual_comm;
+exception
+when no_data_found then
+dbms_output.put_line('invalid employee number');
+end;
+/
+
+
+calling ---------->
+
+declare
+v_empno emp.empno%type:=&enter_emplid;
+v_sal emp.sal%type;
+v_comm emp.comm%type;
+var_comm number;
+annual_comm number;
+begin
+select nvl(comm,0) into v_comm from emp where empno=v_empno;
+var_comm:=uc(v_empno,v_sal,v_comm);
+dbms_output.put_line('salary is: '||v_sal||' commission is '||nvl(v_comm,0)||'and annual commision is '||var_comm);
+end;
+/
+
+
+
+3)
+
+create or replace function u_v_d(p_dno emp.deptno%type) return boolean as
+v_dno number;
+begin
+select deptno into v_dno from dept where deptno=p_dno;
+return true;
+exception
+when no_data_found then
+dbms_output.put_line('Invalid dept no !!');
+return false;
+end;
+/
+
+
+declare
+
+
+CREATE OR REPLACE FUNCTION  USER_VALID_DEPTNO 
+(
+    P_DNO EMP.DEPTNO%TYPE
+
+)RETURN BOOLEAN
+IS
+V_DNO NUMBER;
+BEGIN
+          SELECT DEPTNO INTO V_DNO FROM DEPT WHERE  DEPTNO=P_DNO;
+       RETURN TRUE;
+EXCEPTION
+	WHEN NO_DATA_FOUND THEN
+	DBMS_OUTPUT.PUT_LINE('NO DEPT FOUND');
+	RETURN FALSE;
+
+END;
+/
+---------------------------------------------------------------------------
+CREATE OR REPLACE procedure show_strength
+(
+p_deptno in number
+)
+is
+begin
+
+
+
+
+en
+
+
