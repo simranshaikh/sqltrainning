@@ -1,0 +1,193 @@
+
+============================== D A Y - 4 =====================================
+
+Package : collection of related procedure and functions
+
+
+create or replace package emp_pack as
+procedure getempinfo(p_empno emp.empno%type);
+function getsal(p_empno emp.empno%type) return number;
+end;
+
+
+create or replace package body emp_pack as
+
+procedure getempinfo(p_empno emp.empno%type) as
+v_ename emp.ename%type;
+begin
+select ename into v_ename from emp where empno=p_empno;
+dbms_output.put_line('from getempinfo proc ename ='||v_ename);
+exception
+when no_data_found then
+dbms_output.put_line('empno is invalid');
+end;
+
+function getsal(p_empno emp.empno%type) return number as
+v_sal emp.sal%type;
+begin
+select sal into v_sal from emp where empno=p_empno;
+dbms_output.put_line('from getsal function sal ='||v_sal);
+return v_sal;
+exception
+when no_data_found then
+dbms_output.put_line('empno is invalid');
+end;
+end;
+/
+-------- Execution for procedure
+execute emp_pack.getempinfo(7788);
+
+---> from getempinfo proc ename =SCOTT
+
+------- Execution for function
+ declare
+ v_forsal emp.sal%type;
+ begin
+ v_forsal:=emp_pack.getsal(7788);
+ dbms_output.put_line('sal from caller ='||v_forsal);
+ end;
+ /
+
+------> from getsal function sal =3000
+sal from caller =3000
+
+
+
+------------------ adding procedure in package in body without defining ------------------
+
+create or replace package body emp_pack as
+procedure pri_proc as
+begin
+dbms_output.put_line('in private proc pri_proc');
+end;
+
+procedure getempinfo(p_empno emp.empno%type) as
+v_ename emp.ename%type;
+begin
+pri_proc;
+select ename into v_ename from emp where empno=p_empno;
+dbms_output.put_line('from getempinfo proc ename ='||v_ename);
+exception
+when no_data_found then
+dbms_output.put_line('empno is invalid');
+end;
+
+function getsal(p_empno emp.empno%type) return number as
+v_sal emp.sal%type;
+begin
+select sal into v_sal from emp where empno=p_empno;
+dbms_output.put_line('from getsal function sal ='||v_sal);
+return v_sal;
+exception
+when no_data_found then
+dbms_output.put_line('empno is invalid');
+end;
+end;
+/
+
+
+------------------------------------------------------------
+
+
+create or replace package emp_pack as
+g_var number:=100;
+procedure getempinfo(p_empno emp.empno%type);
+function getsal(p_empno emp.empno%type) return number;
+end;
+
+
+create or replace package body emp_pack as
+pri_var number:=11;
+procedure pri_proc as
+begin
+dbms_output.put_line('in private proc pri_proc');
+end;
+
+procedure getempinfo(p_empno emp.empno%type) as
+v_ename emp.ename%type;
+begin
+pri_proc;
+select ename into v_ename from emp where empno=p_empno;
+dbms_output.put_line('from getempinfo proc ename ='||v_ename);
+exception
+when no_data_found then
+dbms_output.put_line('empno is invalid');
+end;
+
+function getsal(p_empno emp.empno%type) return number as
+v_sal emp.sal%type;
+begin
+select sal into v_sal from emp where empno=p_empno;
+dbms_output.put_line('from getsal function sal ='||v_sal);
+return v_sal;
+exception
+when no_data_found then
+dbms_output.put_line('empno is invalid');
+end;
+end;
+/
+
+
+--->execute
+
+
+ begin
+ dbms_output.put_line('private'||emp_pack.pri_var);
+ end;
+ /
+
+----------------------------------------------------------------
+
+create or replace package emp_pack as
+g_var number:=100;
+procedure getempinfo(p_empno emp.empno%type);
+function getsal(p_empno emp.empno%type) return number;
+end;
+
+
+create or replace package body emp_pack as
+pri_var number:=11;
+procedure pri_proc as
+begin
+dbms_output.put_line('in private proc pri_proc');
+end;
+
+procedure getempinfo(p_empno emp.empno%type) as
+v_ename emp.ename%type;
+begin
+pri_proc;
+select ename into v_ename from emp where empno=p_empno;
+dbms_output.put_line('from getempinfo proc ename ='||v_ename);
+exception
+when no_data_found then
+dbms_output.put_line('empno is invalid');
+end;
+
+function getsal(p_empno emp.empno%type) return number as
+v_sal emp.sal%type;
+begin
+select sal into v_sal from emp where empno=p_empno;
+dbms_output.put_line('from getsal function sal ='||v_sal);
+return v_sal;
+exception
+when no_data_found then
+dbms_output.put_line('empno is invalid');
+end;
+
+
+
+begin
+dbms_output.put_line('Initiliasation');
+g_var:=1;
+end;
+/
+
+
+
+
+----> execute
+:
+begin
+dbms_output.put_line('global '||emp_pack.g_var);
+end;
+/
